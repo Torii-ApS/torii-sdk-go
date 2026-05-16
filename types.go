@@ -4,8 +4,8 @@
 //   - Verify end-user JWTs minted by torii without a per-request round trip
 //     (see VerifyToken / AuthenticateRequest).
 //   - Call the torii backend API to manage users and sessions (see New, Client).
-//   - React to outbound webhooks (VerifyWebhook — currently a stub awaiting #424
-//     Phase 0.5).
+//   - React to outbound webhooks (VerifyWebhook — currently a stub; the
+//     subsystem is not yet available).
 package torii
 
 import (
@@ -105,9 +105,9 @@ func (e *APIError) Error() string {
 }
 
 // WebhookEvent is the shape of a verified outbound webhook payload.
-// The fields are speculative until torii's webhook subsystem ships (#424
-// Phase 0.5); they're declared here so that adopting VerifyWebhook later
-// doesn't break callers that already type their handler around this struct.
+// The fields are tentative until torii's webhook subsystem ships; they're
+// declared here so that adopting VerifyWebhook later doesn't break callers
+// that already type their handler around this struct.
 type WebhookEvent struct {
 	Type      string
 	ID        string
