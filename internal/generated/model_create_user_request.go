@@ -17,13 +17,19 @@ import (
 // checks if the CreateUserRequest type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &CreateUserRequest{}
 
-// CreateUserRequest struct for CreateUserRequest
+// CreateUserRequest Request body for creating an end-user in your environment. All fields are optional; supply at minimum an email if you want the user to be able to sign in via email + password.
 type CreateUserRequest struct {
-	Email       NullableString `json:"email,omitempty"`
-	Password    NullableString `json:"password,omitempty"`
-	Name        NullableString `json:"name,omitempty"`
-	Phone       NullableString `json:"phone,omitempty"`
-	Address     NullableString `json:"address,omitempty"`
+	// Primary email for the new user. If omitted, the user is created without a sign-in identity.
+	Email NullableString `json:"email,omitempty"`
+	// Initial password. Subject to the environment's password policy. Omit to create a passwordless user (e.g. social-only).
+	Password NullableString `json:"password,omitempty"`
+	// Display name to seed on the profile.
+	Name NullableString `json:"name,omitempty"`
+	// Phone number to seed on the profile.
+	Phone NullableString `json:"phone,omitempty"`
+	// Postal address to seed on the profile.
+	Address NullableString `json:"address,omitempty"`
+	// Date of birth in ISO-8601 (YYYY-MM-DD).
 	DateOfBirth NullableString `json:"dateOfBirth,omitempty"`
 }
 
@@ -76,7 +82,6 @@ func (o *CreateUserRequest) HasEmail() bool {
 func (o *CreateUserRequest) SetEmail(v string) {
 	o.Email.Set(&v)
 }
-
 // SetEmailNil sets the value for Email to be an explicit nil
 func (o *CreateUserRequest) SetEmailNil() {
 	o.Email.Set(nil)
@@ -119,7 +124,6 @@ func (o *CreateUserRequest) HasPassword() bool {
 func (o *CreateUserRequest) SetPassword(v string) {
 	o.Password.Set(&v)
 }
-
 // SetPasswordNil sets the value for Password to be an explicit nil
 func (o *CreateUserRequest) SetPasswordNil() {
 	o.Password.Set(nil)
@@ -162,7 +166,6 @@ func (o *CreateUserRequest) HasName() bool {
 func (o *CreateUserRequest) SetName(v string) {
 	o.Name.Set(&v)
 }
-
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *CreateUserRequest) SetNameNil() {
 	o.Name.Set(nil)
@@ -205,7 +208,6 @@ func (o *CreateUserRequest) HasPhone() bool {
 func (o *CreateUserRequest) SetPhone(v string) {
 	o.Phone.Set(&v)
 }
-
 // SetPhoneNil sets the value for Phone to be an explicit nil
 func (o *CreateUserRequest) SetPhoneNil() {
 	o.Phone.Set(nil)
@@ -248,7 +250,6 @@ func (o *CreateUserRequest) HasAddress() bool {
 func (o *CreateUserRequest) SetAddress(v string) {
 	o.Address.Set(&v)
 }
-
 // SetAddressNil sets the value for Address to be an explicit nil
 func (o *CreateUserRequest) SetAddressNil() {
 	o.Address.Set(nil)
@@ -291,7 +292,6 @@ func (o *CreateUserRequest) HasDateOfBirth() bool {
 func (o *CreateUserRequest) SetDateOfBirth(v string) {
 	o.DateOfBirth.Set(&v)
 }
-
 // SetDateOfBirthNil sets the value for DateOfBirth to be an explicit nil
 func (o *CreateUserRequest) SetDateOfBirthNil() {
 	o.DateOfBirth.Set(nil)
@@ -303,7 +303,7 @@ func (o *CreateUserRequest) UnsetDateOfBirth() {
 }
 
 func (o CreateUserRequest) MarshalJSON() ([]byte, error) {
-	toSerialize, err := o.ToMap()
+	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -368,3 +368,5 @@ func (v *NullableCreateUserRequest) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
+
+

@@ -12,6 +12,8 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/Torii-ApS/torii-sdk-go/internal/generated"
 )
 
 // Options configures the torii backend API Client.
@@ -103,6 +105,11 @@ func (e *APIError) Error() string {
 	}
 	return fmt.Sprintf("torii API error %d", e.Status)
 }
+
+// ProblemDetail is re-exported from the generated package so callers can
+// type-assert against torii API error bodies (RFC 7807). All torii API
+// errors that ship a body use this shape.
+type ProblemDetail = generated.ProblemDetail
 
 // WebhookEvent is the shape of a verified outbound webhook payload.
 // The fields are tentative until torii's webhook subsystem ships; they're

@@ -11,25 +11,33 @@ API version: v0
 package generated
 
 import (
-	"bytes"
 	"encoding/json"
-	"fmt"
 	"time"
+	"bytes"
+	"fmt"
 )
 
 // checks if the UserSessionResponse type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &UserSessionResponse{}
 
-// UserSessionResponse struct for UserSessionResponse
+// UserSessionResponse An active end-user session in your environment.
 type UserSessionResponse struct {
-	Id            string         `json:"id"`
-	UserId        string         `json:"userId"`
-	EnvironmentId string         `json:"environmentId"`
-	UserAgent     NullableString `json:"userAgent,omitempty"`
-	IpAddress     NullableString `json:"ipAddress,omitempty"`
-	CreatedAt     time.Time      `json:"createdAt"`
-	ExpiresAt     time.Time      `json:"expiresAt"`
-	LastUsedAt    time.Time      `json:"lastUsedAt"`
+	// Unique identifier for this session.
+	Id string `json:"id"`
+	// Identifier of the end-user this session belongs to.
+	UserId string `json:"userId"`
+	// Identifier of the environment this session belongs to.
+	EnvironmentId string `json:"environmentId"`
+	// Raw User-Agent string captured when the session was created.
+	UserAgent NullableString `json:"userAgent,omitempty"`
+	// IP address captured when the session was created.
+	IpAddress NullableString `json:"ipAddress,omitempty"`
+	// When this session was created (ISO-8601 UTC).
+	CreatedAt time.Time `json:"createdAt"`
+	// When this session expires (ISO-8601 UTC).
+	ExpiresAt time.Time `json:"expiresAt"`
+	// When this session was last seen by the API (ISO-8601 UTC).
+	LastUsedAt time.Time `json:"lastUsedAt"`
 }
 
 type _UserSessionResponse UserSessionResponse
@@ -161,7 +169,6 @@ func (o *UserSessionResponse) HasUserAgent() bool {
 func (o *UserSessionResponse) SetUserAgent(v string) {
 	o.UserAgent.Set(&v)
 }
-
 // SetUserAgentNil sets the value for UserAgent to be an explicit nil
 func (o *UserSessionResponse) SetUserAgentNil() {
 	o.UserAgent.Set(nil)
@@ -204,7 +211,6 @@ func (o *UserSessionResponse) HasIpAddress() bool {
 func (o *UserSessionResponse) SetIpAddress(v string) {
 	o.IpAddress.Set(&v)
 }
-
 // SetIpAddressNil sets the value for IpAddress to be an explicit nil
 func (o *UserSessionResponse) SetIpAddressNil() {
 	o.IpAddress.Set(nil)
@@ -288,7 +294,7 @@ func (o *UserSessionResponse) SetLastUsedAt(v time.Time) {
 }
 
 func (o UserSessionResponse) MarshalJSON() ([]byte, error) {
-	toSerialize, err := o.ToMap()
+	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -330,10 +336,10 @@ func (o *UserSessionResponse) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err
+		return err;
 	}
 
-	for _, requiredProperty := range requiredProperties {
+	for _, requiredProperty := range(requiredProperties) {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -389,3 +395,5 @@ func (v *NullableUserSessionResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
+
+

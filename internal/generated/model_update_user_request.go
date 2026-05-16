@@ -17,14 +17,20 @@ import (
 // checks if the UpdateUserRequest type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &UpdateUserRequest{}
 
-// UpdateUserRequest struct for UpdateUserRequest
+// UpdateUserRequest PATCH body for updating an end-user. Every field is tri-state: omit the key entirely to leave the field unchanged, send a non-null value to set it, or send JSON null to clear it.
 type UpdateUserRequest struct {
-	Name        *string `json:"name,omitempty"`
-	Phone       *string `json:"phone,omitempty"`
-	AvatarUrl   *string `json:"avatarUrl,omitempty"`
-	Locale      *string `json:"locale,omitempty"`
-	Address     *string `json:"address,omitempty"`
-	DateOfBirth *string `json:"dateOfBirth,omitempty"`
+	// New display name. Send null to clear; omit to leave unchanged.
+	Name NullableString `json:"name,omitempty"`
+	// New phone number. Send null to clear; omit to leave unchanged.
+	Phone NullableString `json:"phone,omitempty"`
+	// New avatar URL. Send null to clear; omit to leave unchanged.
+	AvatarUrl NullableString `json:"avatarUrl,omitempty"`
+	// New preferred locale. Send null to clear; omit to leave unchanged.
+	Locale NullableString `json:"locale,omitempty"`
+	// New postal address. Send null to clear; omit to leave unchanged.
+	Address NullableString `json:"address,omitempty"`
+	// New date of birth (YYYY-MM-DD). Send null to clear; omit to leave unchanged.
+	DateOfBirth NullableString `json:"dateOfBirth,omitempty"`
 }
 
 // NewUpdateUserRequest instantiates a new UpdateUserRequest object
@@ -44,200 +50,260 @@ func NewUpdateUserRequestWithDefaults() *UpdateUserRequest {
 	return &this
 }
 
-// GetName returns the Name field value if set, zero value otherwise.
+// GetName returns the Name field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *UpdateUserRequest) GetName() string {
-	if o == nil || IsNil(o.Name) {
+	if o == nil || IsNil(o.Name.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.Name
+	return *o.Name.Get()
 }
 
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *UpdateUserRequest) GetNameOk() (*string, bool) {
-	if o == nil || IsNil(o.Name) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Name, true
+	return o.Name.Get(), o.Name.IsSet()
 }
 
 // HasName returns a boolean if a field has been set.
 func (o *UpdateUserRequest) HasName() bool {
-	if o != nil && !IsNil(o.Name) {
+	if o != nil && o.Name.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetName gets a reference to the given string and assigns it to the Name field.
+// SetName gets a reference to the given NullableString and assigns it to the Name field.
 func (o *UpdateUserRequest) SetName(v string) {
-	o.Name = &v
+	o.Name.Set(&v)
+}
+// SetNameNil sets the value for Name to be an explicit nil
+func (o *UpdateUserRequest) SetNameNil() {
+	o.Name.Set(nil)
 }
 
-// GetPhone returns the Phone field value if set, zero value otherwise.
+// UnsetName ensures that no value is present for Name, not even an explicit nil
+func (o *UpdateUserRequest) UnsetName() {
+	o.Name.Unset()
+}
+
+// GetPhone returns the Phone field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *UpdateUserRequest) GetPhone() string {
-	if o == nil || IsNil(o.Phone) {
+	if o == nil || IsNil(o.Phone.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.Phone
+	return *o.Phone.Get()
 }
 
 // GetPhoneOk returns a tuple with the Phone field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *UpdateUserRequest) GetPhoneOk() (*string, bool) {
-	if o == nil || IsNil(o.Phone) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Phone, true
+	return o.Phone.Get(), o.Phone.IsSet()
 }
 
 // HasPhone returns a boolean if a field has been set.
 func (o *UpdateUserRequest) HasPhone() bool {
-	if o != nil && !IsNil(o.Phone) {
+	if o != nil && o.Phone.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetPhone gets a reference to the given string and assigns it to the Phone field.
+// SetPhone gets a reference to the given NullableString and assigns it to the Phone field.
 func (o *UpdateUserRequest) SetPhone(v string) {
-	o.Phone = &v
+	o.Phone.Set(&v)
+}
+// SetPhoneNil sets the value for Phone to be an explicit nil
+func (o *UpdateUserRequest) SetPhoneNil() {
+	o.Phone.Set(nil)
 }
 
-// GetAvatarUrl returns the AvatarUrl field value if set, zero value otherwise.
+// UnsetPhone ensures that no value is present for Phone, not even an explicit nil
+func (o *UpdateUserRequest) UnsetPhone() {
+	o.Phone.Unset()
+}
+
+// GetAvatarUrl returns the AvatarUrl field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *UpdateUserRequest) GetAvatarUrl() string {
-	if o == nil || IsNil(o.AvatarUrl) {
+	if o == nil || IsNil(o.AvatarUrl.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.AvatarUrl
+	return *o.AvatarUrl.Get()
 }
 
 // GetAvatarUrlOk returns a tuple with the AvatarUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *UpdateUserRequest) GetAvatarUrlOk() (*string, bool) {
-	if o == nil || IsNil(o.AvatarUrl) {
+	if o == nil {
 		return nil, false
 	}
-	return o.AvatarUrl, true
+	return o.AvatarUrl.Get(), o.AvatarUrl.IsSet()
 }
 
 // HasAvatarUrl returns a boolean if a field has been set.
 func (o *UpdateUserRequest) HasAvatarUrl() bool {
-	if o != nil && !IsNil(o.AvatarUrl) {
+	if o != nil && o.AvatarUrl.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetAvatarUrl gets a reference to the given string and assigns it to the AvatarUrl field.
+// SetAvatarUrl gets a reference to the given NullableString and assigns it to the AvatarUrl field.
 func (o *UpdateUserRequest) SetAvatarUrl(v string) {
-	o.AvatarUrl = &v
+	o.AvatarUrl.Set(&v)
+}
+// SetAvatarUrlNil sets the value for AvatarUrl to be an explicit nil
+func (o *UpdateUserRequest) SetAvatarUrlNil() {
+	o.AvatarUrl.Set(nil)
 }
 
-// GetLocale returns the Locale field value if set, zero value otherwise.
+// UnsetAvatarUrl ensures that no value is present for AvatarUrl, not even an explicit nil
+func (o *UpdateUserRequest) UnsetAvatarUrl() {
+	o.AvatarUrl.Unset()
+}
+
+// GetLocale returns the Locale field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *UpdateUserRequest) GetLocale() string {
-	if o == nil || IsNil(o.Locale) {
+	if o == nil || IsNil(o.Locale.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.Locale
+	return *o.Locale.Get()
 }
 
 // GetLocaleOk returns a tuple with the Locale field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *UpdateUserRequest) GetLocaleOk() (*string, bool) {
-	if o == nil || IsNil(o.Locale) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Locale, true
+	return o.Locale.Get(), o.Locale.IsSet()
 }
 
 // HasLocale returns a boolean if a field has been set.
 func (o *UpdateUserRequest) HasLocale() bool {
-	if o != nil && !IsNil(o.Locale) {
+	if o != nil && o.Locale.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetLocale gets a reference to the given string and assigns it to the Locale field.
+// SetLocale gets a reference to the given NullableString and assigns it to the Locale field.
 func (o *UpdateUserRequest) SetLocale(v string) {
-	o.Locale = &v
+	o.Locale.Set(&v)
+}
+// SetLocaleNil sets the value for Locale to be an explicit nil
+func (o *UpdateUserRequest) SetLocaleNil() {
+	o.Locale.Set(nil)
 }
 
-// GetAddress returns the Address field value if set, zero value otherwise.
+// UnsetLocale ensures that no value is present for Locale, not even an explicit nil
+func (o *UpdateUserRequest) UnsetLocale() {
+	o.Locale.Unset()
+}
+
+// GetAddress returns the Address field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *UpdateUserRequest) GetAddress() string {
-	if o == nil || IsNil(o.Address) {
+	if o == nil || IsNil(o.Address.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.Address
+	return *o.Address.Get()
 }
 
 // GetAddressOk returns a tuple with the Address field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *UpdateUserRequest) GetAddressOk() (*string, bool) {
-	if o == nil || IsNil(o.Address) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Address, true
+	return o.Address.Get(), o.Address.IsSet()
 }
 
 // HasAddress returns a boolean if a field has been set.
 func (o *UpdateUserRequest) HasAddress() bool {
-	if o != nil && !IsNil(o.Address) {
+	if o != nil && o.Address.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetAddress gets a reference to the given string and assigns it to the Address field.
+// SetAddress gets a reference to the given NullableString and assigns it to the Address field.
 func (o *UpdateUserRequest) SetAddress(v string) {
-	o.Address = &v
+	o.Address.Set(&v)
+}
+// SetAddressNil sets the value for Address to be an explicit nil
+func (o *UpdateUserRequest) SetAddressNil() {
+	o.Address.Set(nil)
 }
 
-// GetDateOfBirth returns the DateOfBirth field value if set, zero value otherwise.
+// UnsetAddress ensures that no value is present for Address, not even an explicit nil
+func (o *UpdateUserRequest) UnsetAddress() {
+	o.Address.Unset()
+}
+
+// GetDateOfBirth returns the DateOfBirth field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *UpdateUserRequest) GetDateOfBirth() string {
-	if o == nil || IsNil(o.DateOfBirth) {
+	if o == nil || IsNil(o.DateOfBirth.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.DateOfBirth
+	return *o.DateOfBirth.Get()
 }
 
 // GetDateOfBirthOk returns a tuple with the DateOfBirth field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *UpdateUserRequest) GetDateOfBirthOk() (*string, bool) {
-	if o == nil || IsNil(o.DateOfBirth) {
+	if o == nil {
 		return nil, false
 	}
-	return o.DateOfBirth, true
+	return o.DateOfBirth.Get(), o.DateOfBirth.IsSet()
 }
 
 // HasDateOfBirth returns a boolean if a field has been set.
 func (o *UpdateUserRequest) HasDateOfBirth() bool {
-	if o != nil && !IsNil(o.DateOfBirth) {
+	if o != nil && o.DateOfBirth.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetDateOfBirth gets a reference to the given string and assigns it to the DateOfBirth field.
+// SetDateOfBirth gets a reference to the given NullableString and assigns it to the DateOfBirth field.
 func (o *UpdateUserRequest) SetDateOfBirth(v string) {
-	o.DateOfBirth = &v
+	o.DateOfBirth.Set(&v)
+}
+// SetDateOfBirthNil sets the value for DateOfBirth to be an explicit nil
+func (o *UpdateUserRequest) SetDateOfBirthNil() {
+	o.DateOfBirth.Set(nil)
+}
+
+// UnsetDateOfBirth ensures that no value is present for DateOfBirth, not even an explicit nil
+func (o *UpdateUserRequest) UnsetDateOfBirth() {
+	o.DateOfBirth.Unset()
 }
 
 func (o UpdateUserRequest) MarshalJSON() ([]byte, error) {
-	toSerialize, err := o.ToMap()
+	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -246,23 +312,23 @@ func (o UpdateUserRequest) MarshalJSON() ([]byte, error) {
 
 func (o UpdateUserRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.Name) {
-		toSerialize["name"] = o.Name
+	if o.Name.IsSet() {
+		toSerialize["name"] = o.Name.Get()
 	}
-	if !IsNil(o.Phone) {
-		toSerialize["phone"] = o.Phone
+	if o.Phone.IsSet() {
+		toSerialize["phone"] = o.Phone.Get()
 	}
-	if !IsNil(o.AvatarUrl) {
-		toSerialize["avatarUrl"] = o.AvatarUrl
+	if o.AvatarUrl.IsSet() {
+		toSerialize["avatarUrl"] = o.AvatarUrl.Get()
 	}
-	if !IsNil(o.Locale) {
-		toSerialize["locale"] = o.Locale
+	if o.Locale.IsSet() {
+		toSerialize["locale"] = o.Locale.Get()
 	}
-	if !IsNil(o.Address) {
-		toSerialize["address"] = o.Address
+	if o.Address.IsSet() {
+		toSerialize["address"] = o.Address.Get()
 	}
-	if !IsNil(o.DateOfBirth) {
-		toSerialize["dateOfBirth"] = o.DateOfBirth
+	if o.DateOfBirth.IsSet() {
+		toSerialize["dateOfBirth"] = o.DateOfBirth.Get()
 	}
 	return toSerialize, nil
 }
@@ -302,3 +368,5 @@ func (v *NullableUpdateUserRequest) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
+
+
