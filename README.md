@@ -103,13 +103,13 @@ Default base URL is `https://api.torii.so`. Override with `Options.APIURL` for s
 
 ### Tri-state PATCH semantics
 
-`UpdateUserInput` fields are pointer-to-`PatchString`/`PatchLocale`. This lets callers express three distinct intents:
+`UpdateUserInput` fields use the generic `Patch[T any]` wrapper. This lets callers express three distinct intents:
 
 ```go
 client.Users().Update(ctx, userID, torii.UpdateUserInput{
-    Name:    torii.SetString("Acme Inc"),  // change to "Acme Inc"
-    Address: torii.ClearString(),          // clear (JSON null)
-    Phone:   nil,                          // leave unchanged (field omitted)
+    Name:    torii.SetPatch("Acme Inc"),     // change to "Acme Inc"
+    Address: torii.ClearPatch[string](),     // clear (JSON null)
+    // Phone is the zero value — leave unchanged (field omitted from request)
 })
 ```
 

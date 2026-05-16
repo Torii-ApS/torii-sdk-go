@@ -341,26 +341,3 @@ func TestVerifyWebhook_stub(t *testing.T) {
 		t.Errorf("stub error should reference #424: %v", err)
 	}
 }
-
-func TestPatchString_marshal(t *testing.T) {
-	cases := []struct {
-		name string
-		in   PatchString
-		want string
-	}{
-		{"set value", PatchString{Value: "hello"}, `"hello"`},
-		{"explicit null", PatchString{IsNull: true}, `null`},
-		{"set empty string", PatchString{Value: ""}, `""`},
-	}
-	for _, tc := range cases {
-		t.Run(tc.name, func(t *testing.T) {
-			b, err := json.Marshal(tc.in)
-			if err != nil {
-				t.Fatalf("Marshal: %v", err)
-			}
-			if string(b) != tc.want {
-				t.Errorf("got %s, want %s", b, tc.want)
-			}
-		})
-	}
-}

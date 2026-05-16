@@ -20,9 +20,9 @@ var _ MappedNullable = &ServerUserSearchRequest{}
 
 // ServerUserSearchRequest struct for ServerUserSearchRequest
 type ServerUserSearchRequest struct {
-	Name          interface{}  `json:"name,omitempty"`
-	Email         interface{}  `json:"email,omitempty"`
-	Statuses      interface{}  `json:"statuses,omitempty"`
+	Name          *string      `json:"name,omitempty"`
+	Email         *string      `json:"email,omitempty"`
+	Statuses      []string     `json:"statuses,omitempty"`
 	CreatedAfter  NullableTime `json:"createdAfter,omitempty"`
 	CreatedBefore NullableTime `json:"createdBefore,omitempty"`
 }
@@ -44,23 +44,22 @@ func NewServerUserSearchRequestWithDefaults() *ServerUserSearchRequest {
 	return &this
 }
 
-// GetName returns the Name field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *ServerUserSearchRequest) GetName() interface{} {
-	if o == nil {
-		var ret interface{}
+// GetName returns the Name field value if set, zero value otherwise.
+func (o *ServerUserSearchRequest) GetName() string {
+	if o == nil || IsNil(o.Name) {
+		var ret string
 		return ret
 	}
-	return o.Name
+	return *o.Name
 }
 
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *ServerUserSearchRequest) GetNameOk() (*interface{}, bool) {
+func (o *ServerUserSearchRequest) GetNameOk() (*string, bool) {
 	if o == nil || IsNil(o.Name) {
 		return nil, false
 	}
-	return &o.Name, true
+	return o.Name, true
 }
 
 // HasName returns a boolean if a field has been set.
@@ -72,28 +71,27 @@ func (o *ServerUserSearchRequest) HasName() bool {
 	return false
 }
 
-// SetName gets a reference to the given interface{} and assigns it to the Name field.
-func (o *ServerUserSearchRequest) SetName(v interface{}) {
-	o.Name = v
+// SetName gets a reference to the given string and assigns it to the Name field.
+func (o *ServerUserSearchRequest) SetName(v string) {
+	o.Name = &v
 }
 
-// GetEmail returns the Email field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *ServerUserSearchRequest) GetEmail() interface{} {
-	if o == nil {
-		var ret interface{}
+// GetEmail returns the Email field value if set, zero value otherwise.
+func (o *ServerUserSearchRequest) GetEmail() string {
+	if o == nil || IsNil(o.Email) {
+		var ret string
 		return ret
 	}
-	return o.Email
+	return *o.Email
 }
 
 // GetEmailOk returns a tuple with the Email field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *ServerUserSearchRequest) GetEmailOk() (*interface{}, bool) {
+func (o *ServerUserSearchRequest) GetEmailOk() (*string, bool) {
 	if o == nil || IsNil(o.Email) {
 		return nil, false
 	}
-	return &o.Email, true
+	return o.Email, true
 }
 
 // HasEmail returns a boolean if a field has been set.
@@ -105,15 +103,15 @@ func (o *ServerUserSearchRequest) HasEmail() bool {
 	return false
 }
 
-// SetEmail gets a reference to the given interface{} and assigns it to the Email field.
-func (o *ServerUserSearchRequest) SetEmail(v interface{}) {
-	o.Email = v
+// SetEmail gets a reference to the given string and assigns it to the Email field.
+func (o *ServerUserSearchRequest) SetEmail(v string) {
+	o.Email = &v
 }
 
-// GetStatuses returns the Statuses field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *ServerUserSearchRequest) GetStatuses() interface{} {
-	if o == nil {
-		var ret interface{}
+// GetStatuses returns the Statuses field value if set, zero value otherwise.
+func (o *ServerUserSearchRequest) GetStatuses() []string {
+	if o == nil || IsNil(o.Statuses) {
+		var ret []string
 		return ret
 	}
 	return o.Statuses
@@ -121,12 +119,11 @@ func (o *ServerUserSearchRequest) GetStatuses() interface{} {
 
 // GetStatusesOk returns a tuple with the Statuses field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *ServerUserSearchRequest) GetStatusesOk() (*interface{}, bool) {
+func (o *ServerUserSearchRequest) GetStatusesOk() ([]string, bool) {
 	if o == nil || IsNil(o.Statuses) {
 		return nil, false
 	}
-	return &o.Statuses, true
+	return o.Statuses, true
 }
 
 // HasStatuses returns a boolean if a field has been set.
@@ -138,8 +135,8 @@ func (o *ServerUserSearchRequest) HasStatuses() bool {
 	return false
 }
 
-// SetStatuses gets a reference to the given interface{} and assigns it to the Statuses field.
-func (o *ServerUserSearchRequest) SetStatuses(v interface{}) {
+// SetStatuses gets a reference to the given []string and assigns it to the Statuses field.
+func (o *ServerUserSearchRequest) SetStatuses(v []string) {
 	o.Statuses = v
 }
 
@@ -239,13 +236,13 @@ func (o ServerUserSearchRequest) MarshalJSON() ([]byte, error) {
 
 func (o ServerUserSearchRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Name != nil {
+	if !IsNil(o.Name) {
 		toSerialize["name"] = o.Name
 	}
-	if o.Email != nil {
+	if !IsNil(o.Email) {
 		toSerialize["email"] = o.Email
 	}
-	if o.Statuses != nil {
+	if !IsNil(o.Statuses) {
 		toSerialize["statuses"] = o.Statuses
 	}
 	if o.CreatedAfter.IsSet() {
