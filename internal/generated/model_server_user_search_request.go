@@ -18,12 +18,17 @@ import (
 // checks if the ServerUserSearchRequest type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &ServerUserSearchRequest{}
 
-// ServerUserSearchRequest struct for ServerUserSearchRequest
+// ServerUserSearchRequest Optional filter body for `POST /users/search`. Every field is tri-state: omit to skip that filter, send a value to require it, send JSON null to require null.
 type ServerUserSearchRequest struct {
-	Name          *string      `json:"name,omitempty"`
-	Email         *string      `json:"email,omitempty"`
-	Statuses      []string     `json:"statuses,omitempty"`
-	CreatedAfter  NullableTime `json:"createdAfter,omitempty"`
+	// Filter by name (exact match). Send null to require users with no name.
+	Name NullableString `json:"name,omitempty"`
+	// Filter by primary email (exact match). Send null to require users with no email.
+	Email NullableString `json:"email,omitempty"`
+	// Filter by user status. Returns users matching any of the supplied statuses.
+	Statuses []string `json:"statuses,omitempty"`
+	// Only return users created at or after this instant (ISO-8601 UTC).
+	CreatedAfter NullableTime `json:"createdAfter,omitempty"`
+	// Only return users created at or before this instant (ISO-8601 UTC).
 	CreatedBefore NullableTime `json:"createdBefore,omitempty"`
 }
 
@@ -44,68 +49,88 @@ func NewServerUserSearchRequestWithDefaults() *ServerUserSearchRequest {
 	return &this
 }
 
-// GetName returns the Name field value if set, zero value otherwise.
+// GetName returns the Name field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ServerUserSearchRequest) GetName() string {
-	if o == nil || IsNil(o.Name) {
+	if o == nil || IsNil(o.Name.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.Name
+	return *o.Name.Get()
 }
 
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ServerUserSearchRequest) GetNameOk() (*string, bool) {
-	if o == nil || IsNil(o.Name) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Name, true
+	return o.Name.Get(), o.Name.IsSet()
 }
 
 // HasName returns a boolean if a field has been set.
 func (o *ServerUserSearchRequest) HasName() bool {
-	if o != nil && !IsNil(o.Name) {
+	if o != nil && o.Name.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetName gets a reference to the given string and assigns it to the Name field.
+// SetName gets a reference to the given NullableString and assigns it to the Name field.
 func (o *ServerUserSearchRequest) SetName(v string) {
-	o.Name = &v
+	o.Name.Set(&v)
+}
+// SetNameNil sets the value for Name to be an explicit nil
+func (o *ServerUserSearchRequest) SetNameNil() {
+	o.Name.Set(nil)
 }
 
-// GetEmail returns the Email field value if set, zero value otherwise.
+// UnsetName ensures that no value is present for Name, not even an explicit nil
+func (o *ServerUserSearchRequest) UnsetName() {
+	o.Name.Unset()
+}
+
+// GetEmail returns the Email field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ServerUserSearchRequest) GetEmail() string {
-	if o == nil || IsNil(o.Email) {
+	if o == nil || IsNil(o.Email.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.Email
+	return *o.Email.Get()
 }
 
 // GetEmailOk returns a tuple with the Email field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ServerUserSearchRequest) GetEmailOk() (*string, bool) {
-	if o == nil || IsNil(o.Email) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Email, true
+	return o.Email.Get(), o.Email.IsSet()
 }
 
 // HasEmail returns a boolean if a field has been set.
 func (o *ServerUserSearchRequest) HasEmail() bool {
-	if o != nil && !IsNil(o.Email) {
+	if o != nil && o.Email.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetEmail gets a reference to the given string and assigns it to the Email field.
+// SetEmail gets a reference to the given NullableString and assigns it to the Email field.
 func (o *ServerUserSearchRequest) SetEmail(v string) {
-	o.Email = &v
+	o.Email.Set(&v)
+}
+// SetEmailNil sets the value for Email to be an explicit nil
+func (o *ServerUserSearchRequest) SetEmailNil() {
+	o.Email.Set(nil)
+}
+
+// UnsetEmail ensures that no value is present for Email, not even an explicit nil
+func (o *ServerUserSearchRequest) UnsetEmail() {
+	o.Email.Unset()
 }
 
 // GetStatuses returns the Statuses field value if set, zero value otherwise.
@@ -172,7 +197,6 @@ func (o *ServerUserSearchRequest) HasCreatedAfter() bool {
 func (o *ServerUserSearchRequest) SetCreatedAfter(v time.Time) {
 	o.CreatedAfter.Set(&v)
 }
-
 // SetCreatedAfterNil sets the value for CreatedAfter to be an explicit nil
 func (o *ServerUserSearchRequest) SetCreatedAfterNil() {
 	o.CreatedAfter.Set(nil)
@@ -215,7 +239,6 @@ func (o *ServerUserSearchRequest) HasCreatedBefore() bool {
 func (o *ServerUserSearchRequest) SetCreatedBefore(v time.Time) {
 	o.CreatedBefore.Set(&v)
 }
-
 // SetCreatedBeforeNil sets the value for CreatedBefore to be an explicit nil
 func (o *ServerUserSearchRequest) SetCreatedBeforeNil() {
 	o.CreatedBefore.Set(nil)
@@ -227,7 +250,7 @@ func (o *ServerUserSearchRequest) UnsetCreatedBefore() {
 }
 
 func (o ServerUserSearchRequest) MarshalJSON() ([]byte, error) {
-	toSerialize, err := o.ToMap()
+	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -236,11 +259,11 @@ func (o ServerUserSearchRequest) MarshalJSON() ([]byte, error) {
 
 func (o ServerUserSearchRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.Name) {
-		toSerialize["name"] = o.Name
+	if o.Name.IsSet() {
+		toSerialize["name"] = o.Name.Get()
 	}
-	if !IsNil(o.Email) {
-		toSerialize["email"] = o.Email
+	if o.Email.IsSet() {
+		toSerialize["email"] = o.Email.Get()
 	}
 	if !IsNil(o.Statuses) {
 		toSerialize["statuses"] = o.Statuses
@@ -289,3 +312,5 @@ func (v *NullableServerUserSearchRequest) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
+
+

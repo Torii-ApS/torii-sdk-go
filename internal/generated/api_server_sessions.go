@@ -19,13 +19,14 @@ import (
 	"strings"
 )
 
+
 // ServerSessionsAPIService ServerSessionsAPI service
 type ServerSessionsAPIService service
 
 type ApiListSessionsRequest struct {
-	ctx        context.Context
+	ctx context.Context
 	ApiService *ServerSessionsAPIService
-	userId     string
+	userId string
 }
 
 func (r ApiListSessionsRequest) Execute() ([]UserSessionResponse, *http.Response, error) {
@@ -35,27 +36,28 @@ func (r ApiListSessionsRequest) Execute() ([]UserSessionResponse, *http.Response
 /*
 ListSessions List user sessions
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param userId
-	@return ApiListSessionsRequest
+Returns all active (unexpired, unrevoked) sessions for the user, ordered by most recently used.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param userId Identifier of the user whose sessions to list.
+ @return ApiListSessionsRequest
 */
 func (a *ServerSessionsAPIService) ListSessions(ctx context.Context, userId string) ApiListSessionsRequest {
 	return ApiListSessionsRequest{
 		ApiService: a,
-		ctx:        ctx,
-		userId:     userId,
+		ctx: ctx,
+		userId: userId,
 	}
 }
 
 // Execute executes the request
-//
-//	@return []UserSessionResponse
+//  @return []UserSessionResponse
 func (a *ServerSessionsAPIService) ListSessionsExecute(r ApiListSessionsRequest) ([]UserSessionResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue []UserSessionResponse
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  []UserSessionResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ServerSessionsAPIService.ListSessions")
@@ -80,7 +82,7 @@ func (a *ServerSessionsAPIService) ListSessionsExecute(r ApiListSessionsRequest)
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
+	localVarHTTPHeaderAccepts := []string{"application/json", "application/problem+json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -109,6 +111,27 @@ func (a *ServerSessionsAPIService) ListSessionsExecute(r ApiListSessionsRequest)
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ProblemDetail
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ProblemDetail
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -125,9 +148,9 @@ func (a *ServerSessionsAPIService) ListSessionsExecute(r ApiListSessionsRequest)
 }
 
 type ApiRevokeAllSessionsRequest struct {
-	ctx        context.Context
+	ctx context.Context
 	ApiService *ServerSessionsAPIService
-	userId     string
+	userId string
 }
 
 func (r ApiRevokeAllSessionsRequest) Execute() (*http.Response, error) {
@@ -137,24 +160,26 @@ func (r ApiRevokeAllSessionsRequest) Execute() (*http.Response, error) {
 /*
 RevokeAllSessions Revoke all sessions
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param userId
-	@return ApiRevokeAllSessionsRequest
+Immediately revokes every active session for the user. Idempotent.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param userId Identifier of the user whose sessions to revoke.
+ @return ApiRevokeAllSessionsRequest
 */
 func (a *ServerSessionsAPIService) RevokeAllSessions(ctx context.Context, userId string) ApiRevokeAllSessionsRequest {
 	return ApiRevokeAllSessionsRequest{
 		ApiService: a,
-		ctx:        ctx,
-		userId:     userId,
+		ctx: ctx,
+		userId: userId,
 	}
 }
 
 // Execute executes the request
 func (a *ServerSessionsAPIService) RevokeAllSessionsExecute(r ApiRevokeAllSessionsRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod = http.MethodDelete
-		localVarPostBody   interface{}
-		formFiles          []formFile
+		localVarHTTPMethod   = http.MethodDelete
+		localVarPostBody     interface{}
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ServerSessionsAPIService.RevokeAllSessions")
@@ -179,7 +204,7 @@ func (a *ServerSessionsAPIService) RevokeAllSessionsExecute(r ApiRevokeAllSessio
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/problem+json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -208,6 +233,27 @@ func (a *ServerSessionsAPIService) RevokeAllSessionsExecute(r ApiRevokeAllSessio
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ProblemDetail
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ProblemDetail
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
 		return localVarHTTPResponse, newErr
 	}
 
@@ -215,10 +261,10 @@ func (a *ServerSessionsAPIService) RevokeAllSessionsExecute(r ApiRevokeAllSessio
 }
 
 type ApiRevokeSessionRequest struct {
-	ctx        context.Context
+	ctx context.Context
 	ApiService *ServerSessionsAPIService
-	userId     string
-	sessionId  string
+	userId string
+	sessionId string
 }
 
 func (r ApiRevokeSessionRequest) Execute() (*http.Response, error) {
@@ -228,26 +274,28 @@ func (r ApiRevokeSessionRequest) Execute() (*http.Response, error) {
 /*
 RevokeSession Revoke specific session
 
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param userId
-	@param sessionId
-	@return ApiRevokeSessionRequest
+Revokes a single session by id. Idempotent: returns 204 even if the session was already revoked or expired.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param userId Identifier of the user who owns the session.
+ @param sessionId Identifier of the session to revoke.
+ @return ApiRevokeSessionRequest
 */
 func (a *ServerSessionsAPIService) RevokeSession(ctx context.Context, userId string, sessionId string) ApiRevokeSessionRequest {
 	return ApiRevokeSessionRequest{
 		ApiService: a,
-		ctx:        ctx,
-		userId:     userId,
-		sessionId:  sessionId,
+		ctx: ctx,
+		userId: userId,
+		sessionId: sessionId,
 	}
 }
 
 // Execute executes the request
 func (a *ServerSessionsAPIService) RevokeSessionExecute(r ApiRevokeSessionRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod = http.MethodDelete
-		localVarPostBody   interface{}
-		formFiles          []formFile
+		localVarHTTPMethod   = http.MethodDelete
+		localVarPostBody     interface{}
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ServerSessionsAPIService.RevokeSession")
@@ -273,7 +321,7 @@ func (a *ServerSessionsAPIService) RevokeSessionExecute(r ApiRevokeSessionReques
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/problem+json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -301,6 +349,27 @@ func (a *ServerSessionsAPIService) RevokeSessionExecute(r ApiRevokeSessionReques
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ProblemDetail
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ProblemDetail
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

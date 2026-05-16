@@ -11,30 +11,43 @@ API version: v0
 package generated
 
 import (
-	"bytes"
 	"encoding/json"
-	"fmt"
 	"time"
+	"bytes"
+	"fmt"
 )
 
 // checks if the UserResponse type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &UserResponse{}
 
-// UserResponse struct for UserResponse
+// UserResponse An end-user belonging to one of your environments.
 type UserResponse struct {
-	Id            string         `json:"id"`
-	EnvironmentId string         `json:"environmentId"`
-	Name          NullableString `json:"name,omitempty"`
-	Phone         NullableString `json:"phone,omitempty"`
-	AvatarUrl     NullableString `json:"avatarUrl,omitempty"`
-	Locale        NullableString `json:"locale,omitempty"`
-	Address       NullableString `json:"address,omitempty"`
-	DateOfBirth   NullableString `json:"dateOfBirth,omitempty"`
-	Status        string         `json:"status"`
-	CreatedAt     time.Time      `json:"createdAt"`
-	UpdatedAt     time.Time      `json:"updatedAt"`
-	Email         NullableString `json:"email,omitempty"`
-	DeletedAt     NullableTime   `json:"deletedAt,omitempty"`
+	// Unique identifier for this user.
+	Id string `json:"id"`
+	// Identifier of the environment this user belongs to.
+	EnvironmentId string `json:"environmentId"`
+	// Full name on the profile, if any.
+	Name NullableString `json:"name,omitempty"`
+	// Phone number on the profile, if any. Not guaranteed to be verified.
+	Phone NullableString `json:"phone,omitempty"`
+	// URL of the user's avatar image, if any.
+	AvatarUrl NullableString `json:"avatarUrl,omitempty"`
+	// Preferred locale for emails and UI messages.
+	Locale NullableString `json:"locale,omitempty"`
+	// Free-form address string, if provided.
+	Address NullableString `json:"address,omitempty"`
+	// Date of birth in ISO-8601 (YYYY-MM-DD), if provided.
+	DateOfBirth NullableString `json:"dateOfBirth,omitempty"`
+	// Lifecycle status of the user (e.g. active, banned).
+	Status string `json:"status"`
+	// When this user was created (ISO-8601 UTC).
+	CreatedAt time.Time `json:"createdAt"`
+	// When this user was last modified (ISO-8601 UTC).
+	UpdatedAt time.Time `json:"updatedAt"`
+	// Primary email on the profile, if any. Not guaranteed to be verified.
+	Email NullableString `json:"email,omitempty"`
+	// When this user was deleted, if soft-deleted. Null for active users.
+	DeletedAt NullableTime `json:"deletedAt,omitempty"`
 }
 
 type _UserResponse UserResponse
@@ -141,7 +154,6 @@ func (o *UserResponse) HasName() bool {
 func (o *UserResponse) SetName(v string) {
 	o.Name.Set(&v)
 }
-
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *UserResponse) SetNameNil() {
 	o.Name.Set(nil)
@@ -184,7 +196,6 @@ func (o *UserResponse) HasPhone() bool {
 func (o *UserResponse) SetPhone(v string) {
 	o.Phone.Set(&v)
 }
-
 // SetPhoneNil sets the value for Phone to be an explicit nil
 func (o *UserResponse) SetPhoneNil() {
 	o.Phone.Set(nil)
@@ -227,7 +238,6 @@ func (o *UserResponse) HasAvatarUrl() bool {
 func (o *UserResponse) SetAvatarUrl(v string) {
 	o.AvatarUrl.Set(&v)
 }
-
 // SetAvatarUrlNil sets the value for AvatarUrl to be an explicit nil
 func (o *UserResponse) SetAvatarUrlNil() {
 	o.AvatarUrl.Set(nil)
@@ -270,7 +280,6 @@ func (o *UserResponse) HasLocale() bool {
 func (o *UserResponse) SetLocale(v string) {
 	o.Locale.Set(&v)
 }
-
 // SetLocaleNil sets the value for Locale to be an explicit nil
 func (o *UserResponse) SetLocaleNil() {
 	o.Locale.Set(nil)
@@ -313,7 +322,6 @@ func (o *UserResponse) HasAddress() bool {
 func (o *UserResponse) SetAddress(v string) {
 	o.Address.Set(&v)
 }
-
 // SetAddressNil sets the value for Address to be an explicit nil
 func (o *UserResponse) SetAddressNil() {
 	o.Address.Set(nil)
@@ -356,7 +364,6 @@ func (o *UserResponse) HasDateOfBirth() bool {
 func (o *UserResponse) SetDateOfBirth(v string) {
 	o.DateOfBirth.Set(&v)
 }
-
 // SetDateOfBirthNil sets the value for DateOfBirth to be an explicit nil
 func (o *UserResponse) SetDateOfBirthNil() {
 	o.DateOfBirth.Set(nil)
@@ -471,7 +478,6 @@ func (o *UserResponse) HasEmail() bool {
 func (o *UserResponse) SetEmail(v string) {
 	o.Email.Set(&v)
 }
-
 // SetEmailNil sets the value for Email to be an explicit nil
 func (o *UserResponse) SetEmailNil() {
 	o.Email.Set(nil)
@@ -514,7 +520,6 @@ func (o *UserResponse) HasDeletedAt() bool {
 func (o *UserResponse) SetDeletedAt(v time.Time) {
 	o.DeletedAt.Set(&v)
 }
-
 // SetDeletedAtNil sets the value for DeletedAt to be an explicit nil
 func (o *UserResponse) SetDeletedAtNil() {
 	o.DeletedAt.Set(nil)
@@ -526,7 +531,7 @@ func (o *UserResponse) UnsetDeletedAt() {
 }
 
 func (o UserResponse) MarshalJSON() ([]byte, error) {
-	toSerialize, err := o.ToMap()
+	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -584,10 +589,10 @@ func (o *UserResponse) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err
+		return err;
 	}
 
-	for _, requiredProperty := range requiredProperties {
+	for _, requiredProperty := range(requiredProperties) {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -643,3 +648,5 @@ func (v *NullableUserResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
+
+

@@ -11,19 +11,22 @@ API version: v0
 package generated
 
 import (
-	"bytes"
 	"encoding/json"
+	"bytes"
 	"fmt"
 )
 
 // checks if the CursorPageResponseUserResponse type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &CursorPageResponseUserResponse{}
 
-// CursorPageResponseUserResponse struct for CursorPageResponseUserResponse
+// CursorPageResponseUserResponse A single page of results in a cursor-paginated list. Pass `nextCursor` as the `cursor` query parameter to fetch the following page.
 type CursorPageResponseUserResponse struct {
-	Items      []UserResponse `json:"items"`
+	// Items in this page, in stable order.
+	Items []UserResponse `json:"items"`
+	// Cursor to pass to fetch the next page. Null when this is the last page.
 	NextCursor NullableString `json:"nextCursor,omitempty"`
-	HasMore    bool           `json:"hasMore"`
+	// True if more pages are available (equivalent to `nextCursor != null`).
+	HasMore bool `json:"hasMore"`
 }
 
 type _CursorPageResponseUserResponse CursorPageResponseUserResponse
@@ -103,7 +106,6 @@ func (o *CursorPageResponseUserResponse) HasNextCursor() bool {
 func (o *CursorPageResponseUserResponse) SetNextCursor(v string) {
 	o.NextCursor.Set(&v)
 }
-
 // SetNextCursorNil sets the value for NextCursor to be an explicit nil
 func (o *CursorPageResponseUserResponse) SetNextCursorNil() {
 	o.NextCursor.Set(nil)
@@ -139,7 +141,7 @@ func (o *CursorPageResponseUserResponse) SetHasMore(v bool) {
 }
 
 func (o CursorPageResponseUserResponse) MarshalJSON() ([]byte, error) {
-	toSerialize, err := o.ToMap()
+	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -170,10 +172,10 @@ func (o *CursorPageResponseUserResponse) UnmarshalJSON(data []byte) (err error) 
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err
+		return err;
 	}
 
-	for _, requiredProperty := range requiredProperties {
+	for _, requiredProperty := range(requiredProperties) {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -229,3 +231,5 @@ func (v *NullableCursorPageResponseUserResponse) UnmarshalJSON(src []byte) error
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
+
+
