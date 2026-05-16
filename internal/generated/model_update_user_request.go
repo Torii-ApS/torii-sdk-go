@@ -19,12 +19,12 @@ var _ MappedNullable = &UpdateUserRequest{}
 
 // UpdateUserRequest struct for UpdateUserRequest
 type UpdateUserRequest struct {
-	Name        interface{} `json:"name,omitempty"`
-	Phone       interface{} `json:"phone,omitempty"`
-	AvatarUrl   interface{} `json:"avatarUrl,omitempty"`
-	Locale      interface{} `json:"locale,omitempty"`
-	Address     interface{} `json:"address,omitempty"`
-	DateOfBirth interface{} `json:"dateOfBirth,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	Phone       *string `json:"phone,omitempty"`
+	AvatarUrl   *string `json:"avatarUrl,omitempty"`
+	Locale      *string `json:"locale,omitempty"`
+	Address     *string `json:"address,omitempty"`
+	DateOfBirth *string `json:"dateOfBirth,omitempty"`
 }
 
 // NewUpdateUserRequest instantiates a new UpdateUserRequest object
@@ -44,23 +44,22 @@ func NewUpdateUserRequestWithDefaults() *UpdateUserRequest {
 	return &this
 }
 
-// GetName returns the Name field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *UpdateUserRequest) GetName() interface{} {
-	if o == nil {
-		var ret interface{}
+// GetName returns the Name field value if set, zero value otherwise.
+func (o *UpdateUserRequest) GetName() string {
+	if o == nil || IsNil(o.Name) {
+		var ret string
 		return ret
 	}
-	return o.Name
+	return *o.Name
 }
 
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *UpdateUserRequest) GetNameOk() (*interface{}, bool) {
+func (o *UpdateUserRequest) GetNameOk() (*string, bool) {
 	if o == nil || IsNil(o.Name) {
 		return nil, false
 	}
-	return &o.Name, true
+	return o.Name, true
 }
 
 // HasName returns a boolean if a field has been set.
@@ -72,28 +71,27 @@ func (o *UpdateUserRequest) HasName() bool {
 	return false
 }
 
-// SetName gets a reference to the given interface{} and assigns it to the Name field.
-func (o *UpdateUserRequest) SetName(v interface{}) {
-	o.Name = v
+// SetName gets a reference to the given string and assigns it to the Name field.
+func (o *UpdateUserRequest) SetName(v string) {
+	o.Name = &v
 }
 
-// GetPhone returns the Phone field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *UpdateUserRequest) GetPhone() interface{} {
-	if o == nil {
-		var ret interface{}
+// GetPhone returns the Phone field value if set, zero value otherwise.
+func (o *UpdateUserRequest) GetPhone() string {
+	if o == nil || IsNil(o.Phone) {
+		var ret string
 		return ret
 	}
-	return o.Phone
+	return *o.Phone
 }
 
 // GetPhoneOk returns a tuple with the Phone field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *UpdateUserRequest) GetPhoneOk() (*interface{}, bool) {
+func (o *UpdateUserRequest) GetPhoneOk() (*string, bool) {
 	if o == nil || IsNil(o.Phone) {
 		return nil, false
 	}
-	return &o.Phone, true
+	return o.Phone, true
 }
 
 // HasPhone returns a boolean if a field has been set.
@@ -105,28 +103,27 @@ func (o *UpdateUserRequest) HasPhone() bool {
 	return false
 }
 
-// SetPhone gets a reference to the given interface{} and assigns it to the Phone field.
-func (o *UpdateUserRequest) SetPhone(v interface{}) {
-	o.Phone = v
+// SetPhone gets a reference to the given string and assigns it to the Phone field.
+func (o *UpdateUserRequest) SetPhone(v string) {
+	o.Phone = &v
 }
 
-// GetAvatarUrl returns the AvatarUrl field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *UpdateUserRequest) GetAvatarUrl() interface{} {
-	if o == nil {
-		var ret interface{}
+// GetAvatarUrl returns the AvatarUrl field value if set, zero value otherwise.
+func (o *UpdateUserRequest) GetAvatarUrl() string {
+	if o == nil || IsNil(o.AvatarUrl) {
+		var ret string
 		return ret
 	}
-	return o.AvatarUrl
+	return *o.AvatarUrl
 }
 
 // GetAvatarUrlOk returns a tuple with the AvatarUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *UpdateUserRequest) GetAvatarUrlOk() (*interface{}, bool) {
+func (o *UpdateUserRequest) GetAvatarUrlOk() (*string, bool) {
 	if o == nil || IsNil(o.AvatarUrl) {
 		return nil, false
 	}
-	return &o.AvatarUrl, true
+	return o.AvatarUrl, true
 }
 
 // HasAvatarUrl returns a boolean if a field has been set.
@@ -138,28 +135,27 @@ func (o *UpdateUserRequest) HasAvatarUrl() bool {
 	return false
 }
 
-// SetAvatarUrl gets a reference to the given interface{} and assigns it to the AvatarUrl field.
-func (o *UpdateUserRequest) SetAvatarUrl(v interface{}) {
-	o.AvatarUrl = v
+// SetAvatarUrl gets a reference to the given string and assigns it to the AvatarUrl field.
+func (o *UpdateUserRequest) SetAvatarUrl(v string) {
+	o.AvatarUrl = &v
 }
 
-// GetLocale returns the Locale field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *UpdateUserRequest) GetLocale() interface{} {
-	if o == nil {
-		var ret interface{}
+// GetLocale returns the Locale field value if set, zero value otherwise.
+func (o *UpdateUserRequest) GetLocale() string {
+	if o == nil || IsNil(o.Locale) {
+		var ret string
 		return ret
 	}
-	return o.Locale
+	return *o.Locale
 }
 
 // GetLocaleOk returns a tuple with the Locale field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *UpdateUserRequest) GetLocaleOk() (*interface{}, bool) {
+func (o *UpdateUserRequest) GetLocaleOk() (*string, bool) {
 	if o == nil || IsNil(o.Locale) {
 		return nil, false
 	}
-	return &o.Locale, true
+	return o.Locale, true
 }
 
 // HasLocale returns a boolean if a field has been set.
@@ -171,28 +167,27 @@ func (o *UpdateUserRequest) HasLocale() bool {
 	return false
 }
 
-// SetLocale gets a reference to the given interface{} and assigns it to the Locale field.
-func (o *UpdateUserRequest) SetLocale(v interface{}) {
-	o.Locale = v
+// SetLocale gets a reference to the given string and assigns it to the Locale field.
+func (o *UpdateUserRequest) SetLocale(v string) {
+	o.Locale = &v
 }
 
-// GetAddress returns the Address field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *UpdateUserRequest) GetAddress() interface{} {
-	if o == nil {
-		var ret interface{}
+// GetAddress returns the Address field value if set, zero value otherwise.
+func (o *UpdateUserRequest) GetAddress() string {
+	if o == nil || IsNil(o.Address) {
+		var ret string
 		return ret
 	}
-	return o.Address
+	return *o.Address
 }
 
 // GetAddressOk returns a tuple with the Address field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *UpdateUserRequest) GetAddressOk() (*interface{}, bool) {
+func (o *UpdateUserRequest) GetAddressOk() (*string, bool) {
 	if o == nil || IsNil(o.Address) {
 		return nil, false
 	}
-	return &o.Address, true
+	return o.Address, true
 }
 
 // HasAddress returns a boolean if a field has been set.
@@ -204,28 +199,27 @@ func (o *UpdateUserRequest) HasAddress() bool {
 	return false
 }
 
-// SetAddress gets a reference to the given interface{} and assigns it to the Address field.
-func (o *UpdateUserRequest) SetAddress(v interface{}) {
-	o.Address = v
+// SetAddress gets a reference to the given string and assigns it to the Address field.
+func (o *UpdateUserRequest) SetAddress(v string) {
+	o.Address = &v
 }
 
-// GetDateOfBirth returns the DateOfBirth field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *UpdateUserRequest) GetDateOfBirth() interface{} {
-	if o == nil {
-		var ret interface{}
+// GetDateOfBirth returns the DateOfBirth field value if set, zero value otherwise.
+func (o *UpdateUserRequest) GetDateOfBirth() string {
+	if o == nil || IsNil(o.DateOfBirth) {
+		var ret string
 		return ret
 	}
-	return o.DateOfBirth
+	return *o.DateOfBirth
 }
 
 // GetDateOfBirthOk returns a tuple with the DateOfBirth field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *UpdateUserRequest) GetDateOfBirthOk() (*interface{}, bool) {
+func (o *UpdateUserRequest) GetDateOfBirthOk() (*string, bool) {
 	if o == nil || IsNil(o.DateOfBirth) {
 		return nil, false
 	}
-	return &o.DateOfBirth, true
+	return o.DateOfBirth, true
 }
 
 // HasDateOfBirth returns a boolean if a field has been set.
@@ -237,9 +231,9 @@ func (o *UpdateUserRequest) HasDateOfBirth() bool {
 	return false
 }
 
-// SetDateOfBirth gets a reference to the given interface{} and assigns it to the DateOfBirth field.
-func (o *UpdateUserRequest) SetDateOfBirth(v interface{}) {
-	o.DateOfBirth = v
+// SetDateOfBirth gets a reference to the given string and assigns it to the DateOfBirth field.
+func (o *UpdateUserRequest) SetDateOfBirth(v string) {
+	o.DateOfBirth = &v
 }
 
 func (o UpdateUserRequest) MarshalJSON() ([]byte, error) {
@@ -252,22 +246,22 @@ func (o UpdateUserRequest) MarshalJSON() ([]byte, error) {
 
 func (o UpdateUserRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Name != nil {
+	if !IsNil(o.Name) {
 		toSerialize["name"] = o.Name
 	}
-	if o.Phone != nil {
+	if !IsNil(o.Phone) {
 		toSerialize["phone"] = o.Phone
 	}
-	if o.AvatarUrl != nil {
+	if !IsNil(o.AvatarUrl) {
 		toSerialize["avatarUrl"] = o.AvatarUrl
 	}
-	if o.Locale != nil {
+	if !IsNil(o.Locale) {
 		toSerialize["locale"] = o.Locale
 	}
-	if o.Address != nil {
+	if !IsNil(o.Address) {
 		toSerialize["address"] = o.Address
 	}
-	if o.DateOfBirth != nil {
+	if !IsNil(o.DateOfBirth) {
 		toSerialize["dateOfBirth"] = o.DateOfBirth
 	}
 	return toSerialize, nil

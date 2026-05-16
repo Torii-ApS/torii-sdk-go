@@ -1,6 +1,7 @@
 package torii
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -137,21 +138,6 @@ type CreateUserInput struct {
 	CustomClaims  map[string]any
 }
 
-// UpdateUserInput is the request body for Users.Update.
-// Pointer fields distinguish "leave unchanged" (nil) from "set to null"
-// (non-nil pointer to nil-typed value — emitted as JSON null).
-//
-// Tri-state semantics: torii's PATCH endpoint accepts both `null` (clear) and
-// omitted (leave unchanged). To send `null`, wrap with the helper Null[T]().
-type UpdateUserInput struct {
-	Name        *PatchString
-	Phone       *PatchString
-	AvatarURL   *PatchString
-	Locale      *PatchLocale
-	Address     *PatchString
-	DateOfBirth *PatchString
-}
-
 // ListUsersOptions controls the search payload for Users.List.
 type ListUsersOptions struct {
 	Limit         *int32
@@ -162,47 +148,6 @@ type ListUsersOptions struct {
 	CreatedAfter  *time.Time
 	CreatedBefore *time.Time
 }
-
-// PatchString carries a tri-state value for PATCH payloads:
-//   - nil pointer in UpdateUserInput → field omitted, value unchanged server-side
-//   - &PatchString{IsNull: true} → field sent as JSON null, value cleared
-//   - &PatchString{Value: "..."} → field set to the given value
-type PatchString struct {
-	Value  string
-	IsNull bool
-}
-
-func (p PatchString) MarshalJSON() ([]byte, error) {
-	if p.IsNull {
-		return []byte("null"), nil
-	}
-	return json.Marshal(p.Value)
-}
-
-// PatchLocale is the Locale-typed counterpart to PatchString.
-type PatchLocale struct {
-	Value  Locale
-	IsNull bool
-}
-
-func (p PatchLocale) MarshalJSON() ([]byte, error) {
-	if p.IsNull {
-		return []byte("null"), nil
-	}
-	return json.Marshal(string(p.Value))
-}
-
-// SetString returns a *PatchString that sets a field to v.
-func SetString(v string) *PatchString { return &PatchString{Value: v} }
-
-// ClearString returns a *PatchString that clears a field (JSON null).
-func ClearString() *PatchString { return &PatchString{IsNull: true} }
-
-// SetLocale returns a *PatchLocale that sets a field to v.
-func SetLocale(v Locale) *PatchLocale { return &PatchLocale{Value: v} }
-
-// ClearLocale returns a *PatchLocale that clears a field (JSON null).
-func ClearLocale() *PatchLocale { return &PatchLocale{IsNull: true} }
 
 // Users is the resource interface for /users endpoints.
 type Users interface {
@@ -236,10 +181,10 @@ func (c *usersClient) List(ctx context.Context, opts ListUsersOptions) (CursorPa
 	}
 	body := generated.NewServerUserSearchRequest()
 	if opts.Name != nil {
-		body.Name = *opts.Name
+		body.SetName(*opts.Name)
 	}
 	if opts.Email != nil {
-		body.Email = *opts.Email
+		body.SetEmail(*opts.Email)
 	}
 	if len(opts.Statuses) > 0 {
 		strs := make([]string, len(opts.Statuses))
@@ -311,34 +256,79 @@ func (c *usersClient) Create(ctx context.Context, in CreateUserInput) (*User, er
 }
 
 func (c *usersClient) Update(ctx context.Context, userID string, in UpdateUserInput) (*User, error) {
-	// The generated UpdateUserRequest uses `interface{}` for every field, so
-	// we feed it the PatchString/PatchLocale wrappers directly — their
-	// MarshalJSON emits the right JSON for set/null.
-	body := generated.NewUpdateUserRequest()
-	if in.Name != nil {
-		body.Name = *in.Name
+	// The generated UpdateUserRequest uses `*string` fields (omitempty), which
+	// cannot express "send JSON null to clear this field". We sidestep the
+	// generated body marshalling by serialising the tri-state Patch[T]
+	// wrappers ourselves and PATCHing the bytes directly.
+	body, err := in.asJSONBody()
+	if err != nil {
+		return nil, newError("torii.Users.Update: encode body", err)
 	}
-	if in.Phone != nil {
-		body.Phone = *in.Phone
-	}
-	if in.AvatarURL != nil {
-		body.AvatarUrl = *in.AvatarURL
-	}
-	if in.Locale != nil {
-		body.Locale = *in.Locale
-	}
-	if in.Address != nil {
-		body.Address = *in.Address
-	}
-	if in.DateOfBirth != nil {
-		body.DateOfBirth = *in.DateOfBirth
-	}
-	res, httpRes, err := c.api.ServerUsersAPI.UpdateUser(ctx, userID).UpdateUserRequest(*body).Execute()
-	if err := wrapAPIError(httpRes, err); err != nil {
+	var out generated.UserResponse
+	if err := c.doJSON(ctx, http.MethodPatch,
+		"/api/server/v1/users/"+url.PathEscape(userID), body, &out); err != nil {
 		return nil, err
 	}
-	u := userFromGenerated(res)
+	u := userFromGenerated(&out)
 	return &u, nil
+}
+
+// doJSON sends a JSON request body via the generated APIClient's
+// configured *http.Client and decodes the response into out (when non-nil
+// and the response is 2xx). Non-2xx responses are returned as *APIError.
+func (c *usersClient) doJSON(ctx context.Context, method, path string, body []byte, out any) error {
+	cfg := c.api.GetConfig()
+	if len(cfg.Servers) == 0 {
+		return newError("torii: no server URL configured", nil)
+	}
+	base := cfg.Servers[0].URL
+	req, err := http.NewRequestWithContext(ctx, method, base+path, bytes.NewReader(body))
+	if err != nil {
+		return err
+	}
+	for k, v := range cfg.DefaultHeader {
+		req.Header.Set(k, v)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	if cfg.UserAgent != "" {
+		req.Header.Set("User-Agent", cfg.UserAgent)
+	}
+	resp, err := cfg.HTTPClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	respBody, rerr := io.ReadAll(resp.Body)
+	if rerr != nil {
+		return rerr
+	}
+	if resp.StatusCode >= 300 {
+		apiErr := &APIError{Status: resp.StatusCode, Message: resp.Status, Body: respBody}
+		var parsed struct {
+			Code      string `json:"code"`
+			SupportID string `json:"supportId"`
+			Message   string `json:"message"`
+		}
+		if jerr := json.Unmarshal(respBody, &parsed); jerr == nil {
+			if parsed.Code != "" {
+				apiErr.Code = parsed.Code
+			}
+			if parsed.SupportID != "" {
+				apiErr.SupportID = parsed.SupportID
+			}
+			if parsed.Message != "" {
+				apiErr.Message = parsed.Message
+			}
+		}
+		return apiErr
+	}
+	if out != nil && len(respBody) > 0 {
+		if err := json.Unmarshal(respBody, out); err != nil {
+			return newError("torii: decode response", err)
+		}
+	}
+	return nil
 }
 
 func (c *usersClient) Delete(ctx context.Context, userID string) error {

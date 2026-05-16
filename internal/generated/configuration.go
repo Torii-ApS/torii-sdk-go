@@ -90,7 +90,7 @@ func NewConfiguration() *Configuration {
 		Debug:         false,
 		Servers: ServerConfigurations{
 			{
-				URL:         "http://localhost:56008",
+				URL:         "http://localhost:54529",
 				Description: "Generated server url",
 			},
 		},
