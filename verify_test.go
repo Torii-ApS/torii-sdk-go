@@ -337,7 +337,7 @@ func TestVerifyWebhook_stub(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected VerifyWebhook to return stub error")
 	}
-	if !strings.Contains(err.Error(), "#424") {
-		t.Errorf("stub error should reference #424: %v", err)
+	if !strings.Contains(err.Error(), "not yet available") {
+		t.Errorf("stub error should mention webhook is not yet available: %v", err)
 	}
 }
