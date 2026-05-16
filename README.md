@@ -2,12 +2,12 @@
 
 The official Go backend SDK for [torii](https://torii.so) — verify end-user JWTs without a per-request round trip, manage users from your Go server, and (soon) react to outbound webhooks.
 
-> **Status: 0.0.x preview.** Stable for verify + users + sessions. Outbound webhooks (`VerifyWebhook`) is a stub that returns an error until torii's webhook subsystem ships (tracked in [#424](https://github.com/GOOD-Code-ApS/torii/issues/424) Phase 0.5).
+> **Status: 0.0.x preview.** Stable for verify + users + sessions. Outbound webhooks (`VerifyWebhook`) is a stub that returns an error until torii's webhook subsystem ships (tracked in [#424](https://github.com/Torii-ApS/torii/issues/424) Phase 0.5).
 
 ## Install
 
 ```sh
-go get github.com/GOOD-Code-ApS/torii-sdk-go
+go get github.com/Torii-ApS/torii-sdk-go
 ```
 
 Go 1.22+.
@@ -17,7 +17,7 @@ Go 1.22+.
 ```go
 import (
     "context"
-    torii "github.com/GOOD-Code-ApS/torii-sdk-go"
+    torii "github.com/Torii-ApS/torii-sdk-go"
 )
 
 auth, err := torii.VerifyToken(ctx, token, torii.VerifyOptions{
@@ -36,8 +36,8 @@ The first call fetches the issuer's JWKS; subsequent calls reuse the cache and r
 ```go
 import (
     "net/http"
-    torii "github.com/GOOD-Code-ApS/torii-sdk-go"
-    "github.com/GOOD-Code-ApS/torii-sdk-go/middleware"
+    torii "github.com/Torii-ApS/torii-sdk-go"
+    "github.com/Torii-ApS/torii-sdk-go/middleware"
 )
 
 auth := middleware.Middleware(middleware.Options{
@@ -71,7 +71,7 @@ Reads `Authorization: Bearer <token>` and forwards to `VerifyToken`.
 import (
     "context"
     "os"
-    torii "github.com/GOOD-Code-ApS/torii-sdk-go"
+    torii "github.com/Torii-ApS/torii-sdk-go"
 )
 
 client, err := torii.New(torii.Options{

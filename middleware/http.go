@@ -12,7 +12,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	torii "github.com/GOOD-Code-ApS/torii-sdk-go"
+	torii "github.com/Torii-ApS/torii-sdk-go"
 )
 
 // authContextKeyType is unexported to make Go's compile-time type system

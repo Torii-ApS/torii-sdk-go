@@ -10,7 +10,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/GOOD-Code-ApS/torii-sdk-go/internal/generated"
+	"github.com/Torii-ApS/torii-sdk-go/internal/generated"
 )
 
 // defaultAPIURL is the production base URL for torii's backend SDK API.

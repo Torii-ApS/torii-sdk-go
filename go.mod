@@ -1,4 +1,4 @@
-module github.com/GOOD-Code-ApS/torii-sdk-go
+module github.com/Torii-ApS/torii-sdk-go
 
 go 1.22
 

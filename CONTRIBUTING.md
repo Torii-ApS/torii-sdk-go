@@ -6,7 +6,7 @@ Thanks for your interest in `torii-sdk-go`!
 
 Open an issue with:
 
-- The version of `torii-sdk-go` you're using (`go list -m github.com/GOOD-Code-ApS/torii-sdk-go`).
+- The version of `torii-sdk-go` you're using (`go list -m github.com/Torii-ApS/torii-sdk-go`).
 - A minimal reproduction — a few lines that exhibit the bug.
 - What you expected to happen vs. what actually happened.
 
@@ -15,7 +15,7 @@ For security-sensitive issues (anything that could let an attacker forge or bypa
 ## Development
 
 ```sh
-git clone https://github.com/GOOD-Code-ApS/torii-sdk-go
+git clone https://github.com/Torii-ApS/torii-sdk-go
 cd torii-sdk-go
 go test ./...
 ```
@@ -47,7 +47,7 @@ git tag v0.0.2
 git push origin v0.0.2
 ```
 
-Consumers pick up the new version via `go get github.com/GOOD-Code-ApS/torii-sdk-go@v0.0.2`.
+Consumers pick up the new version via `go get github.com/Torii-ApS/torii-sdk-go@v0.0.2`.
 
 ## Code of Conduct
 
