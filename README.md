@@ -50,7 +50,7 @@ The official Go backend SDK for [torii](https://torii.so) — verify end-user JW
    user, err := client.Users().Get(ctx, userID)
    ```
 
-   Default base URL is `https://api.torii.so`. Override with `Options.APIURL` for staging or self-hosted.
+   Default base URL is `https://api.torii.so`. Override with `Options.APIURL` for staging or testing environments.
 
 ## net/http middleware
 
