@@ -1,0 +1,47 @@
+name: Release
+
+# Go modules have no central registry — `proxy.golang.org` serves any
+# module from a public git tag. So "publishing" is just pushing the tag.
+# This workflow:
+#   1. Runs full test suite on the tagged SHA (last line of defense).
+#   2. Creates a GitHub Release with auto-generated notes.
+#   3. Pings the Go module proxy so the new version is cached and
+#      discoverable immediately rather than on first consumer fetch.
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write  # for creating GH releases
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Test on tagged SHA
+        run: go test -race ./...
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            --title "${GITHUB_REF_NAME}" \
+            --generate-notes
+
+      - name: Prime proxy.golang.org cache
+        run: |
+          # GOPROXY default fetches and caches the module version. Without
+          # this step the first `go get github.com/Torii-ApS/torii-sdk-go@v…`
+          # would do it instead — slower for the first consumer.
+          GOPROXY=https://proxy.golang.org GO111MODULE=on \
+            go list -m "github.com/${GITHUB_REPOSITORY}@${GITHUB_REF_NAME}"
