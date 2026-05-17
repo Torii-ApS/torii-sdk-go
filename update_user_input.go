@@ -9,7 +9,6 @@ import "encoding/json"
 type UpdateUserInput struct {
 	Name        Patch[string]
 	Phone       Patch[string]
-	AvatarUrl   Patch[string]
 	Locale      Patch[string]
 	Address     Patch[string]
 	DateOfBirth Patch[string] // ISO date "YYYY-MM-DD"
@@ -25,9 +24,6 @@ func (u UpdateUserInput) asJSONBody() ([]byte, error) {
 	}
 	if !u.Phone.IsOmitted() {
 		m["phone"] = jsonValue(u.Phone)
-	}
-	if !u.AvatarUrl.IsOmitted() {
-		m["avatarUrl"] = jsonValue(u.AvatarUrl)
 	}
 	if !u.Locale.IsOmitted() {
 		m["locale"] = jsonValue(u.Locale)

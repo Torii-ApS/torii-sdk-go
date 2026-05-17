@@ -11,10 +11,10 @@ API version: v0
 package generated
 
 import (
-	"encoding/json"
-	"time"
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // checks if the UserResponse type satisfies the MappedNullable interface at compile time
@@ -30,8 +30,6 @@ type UserResponse struct {
 	Name NullableString `json:"name,omitempty"`
 	// Phone number on the profile, if any. Not guaranteed to be verified.
 	Phone NullableString `json:"phone,omitempty"`
-	// URL of the user's avatar image, if any.
-	AvatarUrl NullableString `json:"avatarUrl,omitempty"`
 	// Preferred locale for emails and UI messages.
 	Locale NullableString `json:"locale,omitempty"`
 	// Free-form address string, if provided.
@@ -154,6 +152,7 @@ func (o *UserResponse) HasName() bool {
 func (o *UserResponse) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *UserResponse) SetNameNil() {
 	o.Name.Set(nil)
@@ -196,6 +195,7 @@ func (o *UserResponse) HasPhone() bool {
 func (o *UserResponse) SetPhone(v string) {
 	o.Phone.Set(&v)
 }
+
 // SetPhoneNil sets the value for Phone to be an explicit nil
 func (o *UserResponse) SetPhoneNil() {
 	o.Phone.Set(nil)
@@ -204,48 +204,6 @@ func (o *UserResponse) SetPhoneNil() {
 // UnsetPhone ensures that no value is present for Phone, not even an explicit nil
 func (o *UserResponse) UnsetPhone() {
 	o.Phone.Unset()
-}
-
-// GetAvatarUrl returns the AvatarUrl field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *UserResponse) GetAvatarUrl() string {
-	if o == nil || IsNil(o.AvatarUrl.Get()) {
-		var ret string
-		return ret
-	}
-	return *o.AvatarUrl.Get()
-}
-
-// GetAvatarUrlOk returns a tuple with the AvatarUrl field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *UserResponse) GetAvatarUrlOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.AvatarUrl.Get(), o.AvatarUrl.IsSet()
-}
-
-// HasAvatarUrl returns a boolean if a field has been set.
-func (o *UserResponse) HasAvatarUrl() bool {
-	if o != nil && o.AvatarUrl.IsSet() {
-		return true
-	}
-
-	return false
-}
-
-// SetAvatarUrl gets a reference to the given NullableString and assigns it to the AvatarUrl field.
-func (o *UserResponse) SetAvatarUrl(v string) {
-	o.AvatarUrl.Set(&v)
-}
-// SetAvatarUrlNil sets the value for AvatarUrl to be an explicit nil
-func (o *UserResponse) SetAvatarUrlNil() {
-	o.AvatarUrl.Set(nil)
-}
-
-// UnsetAvatarUrl ensures that no value is present for AvatarUrl, not even an explicit nil
-func (o *UserResponse) UnsetAvatarUrl() {
-	o.AvatarUrl.Unset()
 }
 
 // GetLocale returns the Locale field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -280,6 +238,7 @@ func (o *UserResponse) HasLocale() bool {
 func (o *UserResponse) SetLocale(v string) {
 	o.Locale.Set(&v)
 }
+
 // SetLocaleNil sets the value for Locale to be an explicit nil
 func (o *UserResponse) SetLocaleNil() {
 	o.Locale.Set(nil)
@@ -322,6 +281,7 @@ func (o *UserResponse) HasAddress() bool {
 func (o *UserResponse) SetAddress(v string) {
 	o.Address.Set(&v)
 }
+
 // SetAddressNil sets the value for Address to be an explicit nil
 func (o *UserResponse) SetAddressNil() {
 	o.Address.Set(nil)
@@ -364,6 +324,7 @@ func (o *UserResponse) HasDateOfBirth() bool {
 func (o *UserResponse) SetDateOfBirth(v string) {
 	o.DateOfBirth.Set(&v)
 }
+
 // SetDateOfBirthNil sets the value for DateOfBirth to be an explicit nil
 func (o *UserResponse) SetDateOfBirthNil() {
 	o.DateOfBirth.Set(nil)
@@ -478,6 +439,7 @@ func (o *UserResponse) HasEmail() bool {
 func (o *UserResponse) SetEmail(v string) {
 	o.Email.Set(&v)
 }
+
 // SetEmailNil sets the value for Email to be an explicit nil
 func (o *UserResponse) SetEmailNil() {
 	o.Email.Set(nil)
@@ -520,6 +482,7 @@ func (o *UserResponse) HasDeletedAt() bool {
 func (o *UserResponse) SetDeletedAt(v time.Time) {
 	o.DeletedAt.Set(&v)
 }
+
 // SetDeletedAtNil sets the value for DeletedAt to be an explicit nil
 func (o *UserResponse) SetDeletedAtNil() {
 	o.DeletedAt.Set(nil)
@@ -531,7 +494,7 @@ func (o *UserResponse) UnsetDeletedAt() {
 }
 
 func (o UserResponse) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -547,9 +510,6 @@ func (o UserResponse) ToMap() (map[string]interface{}, error) {
 	}
 	if o.Phone.IsSet() {
 		toSerialize["phone"] = o.Phone.Get()
-	}
-	if o.AvatarUrl.IsSet() {
-		toSerialize["avatarUrl"] = o.AvatarUrl.Get()
 	}
 	if o.Locale.IsSet() {
 		toSerialize["locale"] = o.Locale.Get()
@@ -589,10 +549,10 @@ func (o *UserResponse) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -648,5 +608,3 @@ func (v *NullableUserResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

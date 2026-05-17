@@ -18,11 +18,11 @@ import (
 // checks if the ServerUserSearchRequest type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &ServerUserSearchRequest{}
 
-// ServerUserSearchRequest Optional filter body for `POST /users/search`. Every field is tri-state: omit to skip that filter, send a value to require it, send JSON null to require null.
+// ServerUserSearchRequest Optional filter body for `POST /users/search`. Every field is tri-state: omit to skip that filter, send a value to require it. Fields whose inner type is nullable (currently `name`, `email`) additionally accept JSON null to filter for users where that column is null; the non-nullable `statuses` field rejects null.
 type ServerUserSearchRequest struct {
-	// Filter by name (exact match). Send null to require users with no name.
+	// Filter by name (case-insensitive substring match). Send null to require users with no name.
 	Name NullableString `json:"name,omitempty"`
-	// Filter by primary email (exact match). Send null to require users with no email.
+	// Filter by primary email (case-insensitive substring match). Send null to require users with no email.
 	Email NullableString `json:"email,omitempty"`
 	// Filter by user status. Returns users matching any of the supplied statuses.
 	Statuses []string `json:"statuses,omitempty"`
@@ -81,6 +81,7 @@ func (o *ServerUserSearchRequest) HasName() bool {
 func (o *ServerUserSearchRequest) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *ServerUserSearchRequest) SetNameNil() {
 	o.Name.Set(nil)
@@ -123,6 +124,7 @@ func (o *ServerUserSearchRequest) HasEmail() bool {
 func (o *ServerUserSearchRequest) SetEmail(v string) {
 	o.Email.Set(&v)
 }
+
 // SetEmailNil sets the value for Email to be an explicit nil
 func (o *ServerUserSearchRequest) SetEmailNil() {
 	o.Email.Set(nil)
@@ -197,6 +199,7 @@ func (o *ServerUserSearchRequest) HasCreatedAfter() bool {
 func (o *ServerUserSearchRequest) SetCreatedAfter(v time.Time) {
 	o.CreatedAfter.Set(&v)
 }
+
 // SetCreatedAfterNil sets the value for CreatedAfter to be an explicit nil
 func (o *ServerUserSearchRequest) SetCreatedAfterNil() {
 	o.CreatedAfter.Set(nil)
@@ -239,6 +242,7 @@ func (o *ServerUserSearchRequest) HasCreatedBefore() bool {
 func (o *ServerUserSearchRequest) SetCreatedBefore(v time.Time) {
 	o.CreatedBefore.Set(&v)
 }
+
 // SetCreatedBeforeNil sets the value for CreatedBefore to be an explicit nil
 func (o *ServerUserSearchRequest) SetCreatedBeforeNil() {
 	o.CreatedBefore.Set(nil)
@@ -250,7 +254,7 @@ func (o *ServerUserSearchRequest) UnsetCreatedBefore() {
 }
 
 func (o ServerUserSearchRequest) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -312,5 +316,3 @@ func (v *NullableServerUserSearchRequest) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

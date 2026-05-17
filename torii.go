@@ -18,7 +18,7 @@ import (
 const defaultAPIURL = "https://api.torii.so"
 
 // userAgent advertises the SDK in outgoing requests. Bumped manually with releases.
-const userAgent = "torii-sdk-go/0.0.1"
+const userAgent = "torii-sdk-go/0.0.2"
 
 // Client is the top-level entrypoint to the torii backend API.
 // Construct with New and reuse a single instance for the lifetime of your
@@ -100,7 +100,6 @@ type User struct {
 	Name          *string
 	Email         *string
 	Phone         *string
-	AvatarURL     *string
 	Locale        *Locale
 	Address       *string
 	DateOfBirth   *string // ISO-8601 date (YYYY-MM-DD)
@@ -392,7 +391,6 @@ func userFromGenerated(g *generated.UserResponse) User {
 		Name:          nullableStringToPtr(g.Name),
 		Email:         nullableStringToPtr(g.Email),
 		Phone:         nullableStringToPtr(g.Phone),
-		AvatarURL:     nullableStringToPtr(g.AvatarUrl),
 		Address:       nullableStringToPtr(g.Address),
 	}
 	if g.Locale.IsSet() && g.Locale.Get() != nil {

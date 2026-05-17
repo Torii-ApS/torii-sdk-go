@@ -23,8 +23,6 @@ type UpdateUserRequest struct {
 	Name NullableString `json:"name,omitempty"`
 	// New phone number. Send null to clear; omit to leave unchanged.
 	Phone NullableString `json:"phone,omitempty"`
-	// New avatar URL. Send null to clear; omit to leave unchanged.
-	AvatarUrl NullableString `json:"avatarUrl,omitempty"`
 	// New preferred locale. Send null to clear; omit to leave unchanged.
 	Locale NullableString `json:"locale,omitempty"`
 	// New postal address. Send null to clear; omit to leave unchanged.
@@ -82,6 +80,7 @@ func (o *UpdateUserRequest) HasName() bool {
 func (o *UpdateUserRequest) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *UpdateUserRequest) SetNameNil() {
 	o.Name.Set(nil)
@@ -124,6 +123,7 @@ func (o *UpdateUserRequest) HasPhone() bool {
 func (o *UpdateUserRequest) SetPhone(v string) {
 	o.Phone.Set(&v)
 }
+
 // SetPhoneNil sets the value for Phone to be an explicit nil
 func (o *UpdateUserRequest) SetPhoneNil() {
 	o.Phone.Set(nil)
@@ -132,48 +132,6 @@ func (o *UpdateUserRequest) SetPhoneNil() {
 // UnsetPhone ensures that no value is present for Phone, not even an explicit nil
 func (o *UpdateUserRequest) UnsetPhone() {
 	o.Phone.Unset()
-}
-
-// GetAvatarUrl returns the AvatarUrl field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *UpdateUserRequest) GetAvatarUrl() string {
-	if o == nil || IsNil(o.AvatarUrl.Get()) {
-		var ret string
-		return ret
-	}
-	return *o.AvatarUrl.Get()
-}
-
-// GetAvatarUrlOk returns a tuple with the AvatarUrl field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *UpdateUserRequest) GetAvatarUrlOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.AvatarUrl.Get(), o.AvatarUrl.IsSet()
-}
-
-// HasAvatarUrl returns a boolean if a field has been set.
-func (o *UpdateUserRequest) HasAvatarUrl() bool {
-	if o != nil && o.AvatarUrl.IsSet() {
-		return true
-	}
-
-	return false
-}
-
-// SetAvatarUrl gets a reference to the given NullableString and assigns it to the AvatarUrl field.
-func (o *UpdateUserRequest) SetAvatarUrl(v string) {
-	o.AvatarUrl.Set(&v)
-}
-// SetAvatarUrlNil sets the value for AvatarUrl to be an explicit nil
-func (o *UpdateUserRequest) SetAvatarUrlNil() {
-	o.AvatarUrl.Set(nil)
-}
-
-// UnsetAvatarUrl ensures that no value is present for AvatarUrl, not even an explicit nil
-func (o *UpdateUserRequest) UnsetAvatarUrl() {
-	o.AvatarUrl.Unset()
 }
 
 // GetLocale returns the Locale field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -208,6 +166,7 @@ func (o *UpdateUserRequest) HasLocale() bool {
 func (o *UpdateUserRequest) SetLocale(v string) {
 	o.Locale.Set(&v)
 }
+
 // SetLocaleNil sets the value for Locale to be an explicit nil
 func (o *UpdateUserRequest) SetLocaleNil() {
 	o.Locale.Set(nil)
@@ -250,6 +209,7 @@ func (o *UpdateUserRequest) HasAddress() bool {
 func (o *UpdateUserRequest) SetAddress(v string) {
 	o.Address.Set(&v)
 }
+
 // SetAddressNil sets the value for Address to be an explicit nil
 func (o *UpdateUserRequest) SetAddressNil() {
 	o.Address.Set(nil)
@@ -292,6 +252,7 @@ func (o *UpdateUserRequest) HasDateOfBirth() bool {
 func (o *UpdateUserRequest) SetDateOfBirth(v string) {
 	o.DateOfBirth.Set(&v)
 }
+
 // SetDateOfBirthNil sets the value for DateOfBirth to be an explicit nil
 func (o *UpdateUserRequest) SetDateOfBirthNil() {
 	o.DateOfBirth.Set(nil)
@@ -303,7 +264,7 @@ func (o *UpdateUserRequest) UnsetDateOfBirth() {
 }
 
 func (o UpdateUserRequest) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -317,9 +278,6 @@ func (o UpdateUserRequest) ToMap() (map[string]interface{}, error) {
 	}
 	if o.Phone.IsSet() {
 		toSerialize["phone"] = o.Phone.Get()
-	}
-	if o.AvatarUrl.IsSet() {
-		toSerialize["avatarUrl"] = o.AvatarUrl.Get()
 	}
 	if o.Locale.IsSet() {
 		toSerialize["locale"] = o.Locale.Get()
@@ -368,5 +326,3 @@ func (v *NullableUpdateUserRequest) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -44,7 +44,6 @@ func TestUpdateUserInput_asJSONBody(t *testing.T) {
 			input: UpdateUserInput{
 				Name:        SetPatch("Bob"),
 				Phone:       ClearPatch[string](),
-				AvatarUrl:   SetPatch("https://example.com/a.png"),
 				Locale:      SetPatch("en"),
 				Address:     ClearPatch[string](),
 				DateOfBirth: SetPatch("1990-01-01"),
@@ -52,7 +51,6 @@ func TestUpdateUserInput_asJSONBody(t *testing.T) {
 			want: map[string]any{
 				"name":        "Bob",
 				"phone":       nil,
-				"avatarUrl":   "https://example.com/a.png",
 				"locale":      "en",
 				"address":     nil,
 				"dateOfBirth": "1990-01-01",
