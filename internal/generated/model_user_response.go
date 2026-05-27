@@ -11,10 +11,10 @@ API version: v0
 package generated
 
 import (
-	"bytes"
 	"encoding/json"
-	"fmt"
 	"time"
+	"bytes"
+	"fmt"
 )
 
 // checks if the UserResponse type satisfies the MappedNullable interface at compile time
@@ -44,6 +44,8 @@ type UserResponse struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 	// Primary email on the profile, if any. Not guaranteed to be verified.
 	Email NullableString `json:"email,omitempty"`
+	// When this user's primary email was verified, if it has been verified.
+	EmailVerifiedAt NullableTime `json:"emailVerifiedAt,omitempty"`
 	// When this user was deleted, if soft-deleted. Null for active users.
 	DeletedAt NullableTime `json:"deletedAt,omitempty"`
 }
@@ -152,7 +154,6 @@ func (o *UserResponse) HasName() bool {
 func (o *UserResponse) SetName(v string) {
 	o.Name.Set(&v)
 }
-
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *UserResponse) SetNameNil() {
 	o.Name.Set(nil)
@@ -195,7 +196,6 @@ func (o *UserResponse) HasPhone() bool {
 func (o *UserResponse) SetPhone(v string) {
 	o.Phone.Set(&v)
 }
-
 // SetPhoneNil sets the value for Phone to be an explicit nil
 func (o *UserResponse) SetPhoneNil() {
 	o.Phone.Set(nil)
@@ -238,7 +238,6 @@ func (o *UserResponse) HasLocale() bool {
 func (o *UserResponse) SetLocale(v string) {
 	o.Locale.Set(&v)
 }
-
 // SetLocaleNil sets the value for Locale to be an explicit nil
 func (o *UserResponse) SetLocaleNil() {
 	o.Locale.Set(nil)
@@ -281,7 +280,6 @@ func (o *UserResponse) HasAddress() bool {
 func (o *UserResponse) SetAddress(v string) {
 	o.Address.Set(&v)
 }
-
 // SetAddressNil sets the value for Address to be an explicit nil
 func (o *UserResponse) SetAddressNil() {
 	o.Address.Set(nil)
@@ -324,7 +322,6 @@ func (o *UserResponse) HasDateOfBirth() bool {
 func (o *UserResponse) SetDateOfBirth(v string) {
 	o.DateOfBirth.Set(&v)
 }
-
 // SetDateOfBirthNil sets the value for DateOfBirth to be an explicit nil
 func (o *UserResponse) SetDateOfBirthNil() {
 	o.DateOfBirth.Set(nil)
@@ -439,7 +436,6 @@ func (o *UserResponse) HasEmail() bool {
 func (o *UserResponse) SetEmail(v string) {
 	o.Email.Set(&v)
 }
-
 // SetEmailNil sets the value for Email to be an explicit nil
 func (o *UserResponse) SetEmailNil() {
 	o.Email.Set(nil)
@@ -448,6 +444,48 @@ func (o *UserResponse) SetEmailNil() {
 // UnsetEmail ensures that no value is present for Email, not even an explicit nil
 func (o *UserResponse) UnsetEmail() {
 	o.Email.Unset()
+}
+
+// GetEmailVerifiedAt returns the EmailVerifiedAt field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *UserResponse) GetEmailVerifiedAt() time.Time {
+	if o == nil || IsNil(o.EmailVerifiedAt.Get()) {
+		var ret time.Time
+		return ret
+	}
+	return *o.EmailVerifiedAt.Get()
+}
+
+// GetEmailVerifiedAtOk returns a tuple with the EmailVerifiedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *UserResponse) GetEmailVerifiedAtOk() (*time.Time, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.EmailVerifiedAt.Get(), o.EmailVerifiedAt.IsSet()
+}
+
+// HasEmailVerifiedAt returns a boolean if a field has been set.
+func (o *UserResponse) HasEmailVerifiedAt() bool {
+	if o != nil && o.EmailVerifiedAt.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetEmailVerifiedAt gets a reference to the given NullableTime and assigns it to the EmailVerifiedAt field.
+func (o *UserResponse) SetEmailVerifiedAt(v time.Time) {
+	o.EmailVerifiedAt.Set(&v)
+}
+// SetEmailVerifiedAtNil sets the value for EmailVerifiedAt to be an explicit nil
+func (o *UserResponse) SetEmailVerifiedAtNil() {
+	o.EmailVerifiedAt.Set(nil)
+}
+
+// UnsetEmailVerifiedAt ensures that no value is present for EmailVerifiedAt, not even an explicit nil
+func (o *UserResponse) UnsetEmailVerifiedAt() {
+	o.EmailVerifiedAt.Unset()
 }
 
 // GetDeletedAt returns the DeletedAt field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -482,7 +520,6 @@ func (o *UserResponse) HasDeletedAt() bool {
 func (o *UserResponse) SetDeletedAt(v time.Time) {
 	o.DeletedAt.Set(&v)
 }
-
 // SetDeletedAtNil sets the value for DeletedAt to be an explicit nil
 func (o *UserResponse) SetDeletedAtNil() {
 	o.DeletedAt.Set(nil)
@@ -494,7 +531,7 @@ func (o *UserResponse) UnsetDeletedAt() {
 }
 
 func (o UserResponse) MarshalJSON() ([]byte, error) {
-	toSerialize, err := o.ToMap()
+	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -526,6 +563,9 @@ func (o UserResponse) ToMap() (map[string]interface{}, error) {
 	if o.Email.IsSet() {
 		toSerialize["email"] = o.Email.Get()
 	}
+	if o.EmailVerifiedAt.IsSet() {
+		toSerialize["emailVerifiedAt"] = o.EmailVerifiedAt.Get()
+	}
 	if o.DeletedAt.IsSet() {
 		toSerialize["deletedAt"] = o.DeletedAt.Get()
 	}
@@ -549,10 +589,10 @@ func (o *UserResponse) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err
+		return err;
 	}
 
-	for _, requiredProperty := range requiredProperties {
+	for _, requiredProperty := range(requiredProperties) {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -608,3 +648,5 @@ func (v *NullableUserResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
+
+
