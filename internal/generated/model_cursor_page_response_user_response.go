@@ -11,8 +11,8 @@ API version: v0
 package generated
 
 import (
-	"bytes"
 	"encoding/json"
+	"bytes"
 	"fmt"
 )
 
@@ -106,7 +106,6 @@ func (o *CursorPageResponseUserResponse) HasNextCursor() bool {
 func (o *CursorPageResponseUserResponse) SetNextCursor(v string) {
 	o.NextCursor.Set(&v)
 }
-
 // SetNextCursorNil sets the value for NextCursor to be an explicit nil
 func (o *CursorPageResponseUserResponse) SetNextCursorNil() {
 	o.NextCursor.Set(nil)
@@ -142,7 +141,7 @@ func (o *CursorPageResponseUserResponse) SetHasMore(v bool) {
 }
 
 func (o CursorPageResponseUserResponse) MarshalJSON() ([]byte, error) {
-	toSerialize, err := o.ToMap()
+	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -173,10 +172,10 @@ func (o *CursorPageResponseUserResponse) UnmarshalJSON(data []byte) (err error) 
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err
+		return err;
 	}
 
-	for _, requiredProperty := range requiredProperties {
+	for _, requiredProperty := range(requiredProperties) {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -232,3 +231,5 @@ func (v *NullableCursorPageResponseUserResponse) UnmarshalJSON(src []byte) error
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
+
+

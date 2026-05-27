@@ -11,10 +11,10 @@ API version: v0
 package generated
 
 import (
-	"bytes"
 	"encoding/json"
-	"fmt"
 	"time"
+	"bytes"
+	"fmt"
 )
 
 // checks if the UserSessionResponse type satisfies the MappedNullable interface at compile time
@@ -38,6 +38,8 @@ type UserSessionResponse struct {
 	ExpiresAt time.Time `json:"expiresAt"`
 	// When this session was last seen by the API (ISO-8601 UTC).
 	LastUsedAt time.Time `json:"lastUsedAt"`
+	// Active organization pinned to this session (`org_id` claim on re-mint).
+	ActiveOrganizationId NullableString `json:"activeOrganizationId,omitempty"`
 }
 
 type _UserSessionResponse UserSessionResponse
@@ -169,7 +171,6 @@ func (o *UserSessionResponse) HasUserAgent() bool {
 func (o *UserSessionResponse) SetUserAgent(v string) {
 	o.UserAgent.Set(&v)
 }
-
 // SetUserAgentNil sets the value for UserAgent to be an explicit nil
 func (o *UserSessionResponse) SetUserAgentNil() {
 	o.UserAgent.Set(nil)
@@ -212,7 +213,6 @@ func (o *UserSessionResponse) HasIpAddress() bool {
 func (o *UserSessionResponse) SetIpAddress(v string) {
 	o.IpAddress.Set(&v)
 }
-
 // SetIpAddressNil sets the value for IpAddress to be an explicit nil
 func (o *UserSessionResponse) SetIpAddressNil() {
 	o.IpAddress.Set(nil)
@@ -295,8 +295,50 @@ func (o *UserSessionResponse) SetLastUsedAt(v time.Time) {
 	o.LastUsedAt = v
 }
 
+// GetActiveOrganizationId returns the ActiveOrganizationId field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *UserSessionResponse) GetActiveOrganizationId() string {
+	if o == nil || IsNil(o.ActiveOrganizationId.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.ActiveOrganizationId.Get()
+}
+
+// GetActiveOrganizationIdOk returns a tuple with the ActiveOrganizationId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *UserSessionResponse) GetActiveOrganizationIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.ActiveOrganizationId.Get(), o.ActiveOrganizationId.IsSet()
+}
+
+// HasActiveOrganizationId returns a boolean if a field has been set.
+func (o *UserSessionResponse) HasActiveOrganizationId() bool {
+	if o != nil && o.ActiveOrganizationId.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetActiveOrganizationId gets a reference to the given NullableString and assigns it to the ActiveOrganizationId field.
+func (o *UserSessionResponse) SetActiveOrganizationId(v string) {
+	o.ActiveOrganizationId.Set(&v)
+}
+// SetActiveOrganizationIdNil sets the value for ActiveOrganizationId to be an explicit nil
+func (o *UserSessionResponse) SetActiveOrganizationIdNil() {
+	o.ActiveOrganizationId.Set(nil)
+}
+
+// UnsetActiveOrganizationId ensures that no value is present for ActiveOrganizationId, not even an explicit nil
+func (o *UserSessionResponse) UnsetActiveOrganizationId() {
+	o.ActiveOrganizationId.Unset()
+}
+
 func (o UserSessionResponse) MarshalJSON() ([]byte, error) {
-	toSerialize, err := o.ToMap()
+	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -317,6 +359,9 @@ func (o UserSessionResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize["createdAt"] = o.CreatedAt
 	toSerialize["expiresAt"] = o.ExpiresAt
 	toSerialize["lastUsedAt"] = o.LastUsedAt
+	if o.ActiveOrganizationId.IsSet() {
+		toSerialize["activeOrganizationId"] = o.ActiveOrganizationId.Get()
+	}
 	return toSerialize, nil
 }
 
@@ -338,10 +383,10 @@ func (o *UserSessionResponse) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err
+		return err;
 	}
 
-	for _, requiredProperty := range requiredProperties {
+	for _, requiredProperty := range(requiredProperties) {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -397,3 +442,5 @@ func (v *NullableUserSessionResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
+
+

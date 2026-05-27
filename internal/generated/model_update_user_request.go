@@ -80,7 +80,6 @@ func (o *UpdateUserRequest) HasName() bool {
 func (o *UpdateUserRequest) SetName(v string) {
 	o.Name.Set(&v)
 }
-
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *UpdateUserRequest) SetNameNil() {
 	o.Name.Set(nil)
@@ -123,7 +122,6 @@ func (o *UpdateUserRequest) HasPhone() bool {
 func (o *UpdateUserRequest) SetPhone(v string) {
 	o.Phone.Set(&v)
 }
-
 // SetPhoneNil sets the value for Phone to be an explicit nil
 func (o *UpdateUserRequest) SetPhoneNil() {
 	o.Phone.Set(nil)
@@ -166,7 +164,6 @@ func (o *UpdateUserRequest) HasLocale() bool {
 func (o *UpdateUserRequest) SetLocale(v string) {
 	o.Locale.Set(&v)
 }
-
 // SetLocaleNil sets the value for Locale to be an explicit nil
 func (o *UpdateUserRequest) SetLocaleNil() {
 	o.Locale.Set(nil)
@@ -209,7 +206,6 @@ func (o *UpdateUserRequest) HasAddress() bool {
 func (o *UpdateUserRequest) SetAddress(v string) {
 	o.Address.Set(&v)
 }
-
 // SetAddressNil sets the value for Address to be an explicit nil
 func (o *UpdateUserRequest) SetAddressNil() {
 	o.Address.Set(nil)
@@ -252,7 +248,6 @@ func (o *UpdateUserRequest) HasDateOfBirth() bool {
 func (o *UpdateUserRequest) SetDateOfBirth(v string) {
 	o.DateOfBirth.Set(&v)
 }
-
 // SetDateOfBirthNil sets the value for DateOfBirth to be an explicit nil
 func (o *UpdateUserRequest) SetDateOfBirthNil() {
 	o.DateOfBirth.Set(nil)
@@ -264,7 +259,7 @@ func (o *UpdateUserRequest) UnsetDateOfBirth() {
 }
 
 func (o UpdateUserRequest) MarshalJSON() ([]byte, error) {
-	toSerialize, err := o.ToMap()
+	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -326,3 +321,5 @@ func (v *NullableUpdateUserRequest) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
+
+

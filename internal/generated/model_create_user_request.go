@@ -82,7 +82,6 @@ func (o *CreateUserRequest) HasEmail() bool {
 func (o *CreateUserRequest) SetEmail(v string) {
 	o.Email.Set(&v)
 }
-
 // SetEmailNil sets the value for Email to be an explicit nil
 func (o *CreateUserRequest) SetEmailNil() {
 	o.Email.Set(nil)
@@ -125,7 +124,6 @@ func (o *CreateUserRequest) HasPassword() bool {
 func (o *CreateUserRequest) SetPassword(v string) {
 	o.Password.Set(&v)
 }
-
 // SetPasswordNil sets the value for Password to be an explicit nil
 func (o *CreateUserRequest) SetPasswordNil() {
 	o.Password.Set(nil)
@@ -168,7 +166,6 @@ func (o *CreateUserRequest) HasName() bool {
 func (o *CreateUserRequest) SetName(v string) {
 	o.Name.Set(&v)
 }
-
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *CreateUserRequest) SetNameNil() {
 	o.Name.Set(nil)
@@ -211,7 +208,6 @@ func (o *CreateUserRequest) HasPhone() bool {
 func (o *CreateUserRequest) SetPhone(v string) {
 	o.Phone.Set(&v)
 }
-
 // SetPhoneNil sets the value for Phone to be an explicit nil
 func (o *CreateUserRequest) SetPhoneNil() {
 	o.Phone.Set(nil)
@@ -254,7 +250,6 @@ func (o *CreateUserRequest) HasAddress() bool {
 func (o *CreateUserRequest) SetAddress(v string) {
 	o.Address.Set(&v)
 }
-
 // SetAddressNil sets the value for Address to be an explicit nil
 func (o *CreateUserRequest) SetAddressNil() {
 	o.Address.Set(nil)
@@ -297,7 +292,6 @@ func (o *CreateUserRequest) HasDateOfBirth() bool {
 func (o *CreateUserRequest) SetDateOfBirth(v string) {
 	o.DateOfBirth.Set(&v)
 }
-
 // SetDateOfBirthNil sets the value for DateOfBirth to be an explicit nil
 func (o *CreateUserRequest) SetDateOfBirthNil() {
 	o.DateOfBirth.Set(nil)
@@ -309,7 +303,7 @@ func (o *CreateUserRequest) UnsetDateOfBirth() {
 }
 
 func (o CreateUserRequest) MarshalJSON() ([]byte, error) {
-	toSerialize, err := o.ToMap()
+	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -374,3 +368,5 @@ func (v *NullableCreateUserRequest) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
+
+
