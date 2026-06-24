@@ -20,7 +20,7 @@ cd torii-sdk-go
 go test ./...
 ```
 
-The REST client under `internal/generated/` is produced by [`openapi-generator`](https://openapi-generator.tech/) from `spec/server-v1.json`. Don't hand-edit it. To regenerate after a spec update:
+The REST client under `internal/generated/` is produced by [`openapi-generator`](https://openapi-generator.tech/) from `spec/server-v1.json`. Don't hand-edit it. Run `./regen.sh` to regenerate it (it encapsulates the steps below). To regenerate after a spec update:
 
 ```sh
 npx -y @openapitools/openapi-generator-cli generate \
