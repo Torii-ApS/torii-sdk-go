@@ -18,4 +18,9 @@ npx -y @openapitools/openapi-generator-cli generate \
   test docs api .openapi-generator .openapi-generator-ignore .travis.yml \
   git_push.sh README.md .gitignore )
 
+# The generator's raw Go output isn't gofmt-clean (e.g. `a,b :=` without the
+# space, stray blank lines). Format it so the committed tree is canonical and
+# re-running regen is a true no-op (the release gate asserts this).
+gofmt -w internal/generated/
+
 echo "✓ regenerated internal/generated/ from spec/server-v1.json"
