@@ -11,10 +11,10 @@ API version: v1
 package generated
 
 import (
-	"encoding/json"
-	"time"
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // checks if the UserSessionResponse type satisfies the MappedNullable interface at compile time
@@ -173,6 +173,7 @@ func (o *UserSessionResponse) HasUserAgent() bool {
 func (o *UserSessionResponse) SetUserAgent(v string) {
 	o.UserAgent.Set(&v)
 }
+
 // SetUserAgentNil sets the value for UserAgent to be an explicit nil
 func (o *UserSessionResponse) SetUserAgentNil() {
 	o.UserAgent.Set(nil)
@@ -215,6 +216,7 @@ func (o *UserSessionResponse) HasIpAddress() bool {
 func (o *UserSessionResponse) SetIpAddress(v string) {
 	o.IpAddress.Set(&v)
 }
+
 // SetIpAddressNil sets the value for IpAddress to be an explicit nil
 func (o *UserSessionResponse) SetIpAddressNil() {
 	o.IpAddress.Set(nil)
@@ -329,6 +331,7 @@ func (o *UserSessionResponse) HasActiveOrganizationId() bool {
 func (o *UserSessionResponse) SetActiveOrganizationId(v string) {
 	o.ActiveOrganizationId.Set(&v)
 }
+
 // SetActiveOrganizationIdNil sets the value for ActiveOrganizationId to be an explicit nil
 func (o *UserSessionResponse) SetActiveOrganizationIdNil() {
 	o.ActiveOrganizationId.Set(nil)
@@ -371,6 +374,7 @@ func (o *UserSessionResponse) HasImpersonatedBy() bool {
 func (o *UserSessionResponse) SetImpersonatedBy(v string) {
 	o.ImpersonatedBy.Set(&v)
 }
+
 // SetImpersonatedByNil sets the value for ImpersonatedBy to be an explicit nil
 func (o *UserSessionResponse) SetImpersonatedByNil() {
 	o.ImpersonatedBy.Set(nil)
@@ -382,7 +386,7 @@ func (o *UserSessionResponse) UnsetImpersonatedBy() {
 }
 
 func (o UserSessionResponse) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -430,10 +434,10 @@ func (o *UserSessionResponse) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -489,5 +493,3 @@ func (v *NullableUserSessionResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

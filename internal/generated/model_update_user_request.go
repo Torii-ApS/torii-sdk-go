@@ -78,6 +78,7 @@ func (o *UpdateUserRequest) HasFirstName() bool {
 func (o *UpdateUserRequest) SetFirstName(v string) {
 	o.FirstName.Set(&v)
 }
+
 // SetFirstNameNil sets the value for FirstName to be an explicit nil
 func (o *UpdateUserRequest) SetFirstNameNil() {
 	o.FirstName.Set(nil)
@@ -120,6 +121,7 @@ func (o *UpdateUserRequest) HasLastName() bool {
 func (o *UpdateUserRequest) SetLastName(v string) {
 	o.LastName.Set(&v)
 }
+
 // SetLastNameNil sets the value for LastName to be an explicit nil
 func (o *UpdateUserRequest) SetLastNameNil() {
 	o.LastName.Set(nil)
@@ -162,6 +164,7 @@ func (o *UpdateUserRequest) HasLocale() bool {
 func (o *UpdateUserRequest) SetLocale(v string) {
 	o.Locale.Set(&v)
 }
+
 // SetLocaleNil sets the value for Locale to be an explicit nil
 func (o *UpdateUserRequest) SetLocaleNil() {
 	o.Locale.Set(nil)
@@ -205,7 +208,7 @@ func (o *UpdateUserRequest) SetUnsafeMetadata(v map[string]interface{}) {
 }
 
 func (o UpdateUserRequest) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -264,5 +267,3 @@ func (v *NullableUpdateUserRequest) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

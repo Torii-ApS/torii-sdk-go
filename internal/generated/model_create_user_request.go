@@ -12,8 +12,6 @@ package generated
 
 import (
 	"encoding/json"
-	"bytes"
-	"fmt"
 )
 
 // checks if the CreateUserRequest type satisfies the MappedNullable interface at compile time
@@ -30,24 +28,19 @@ type CreateUserRequest struct {
 	// Last (family) name to seed on the profile.
 	LastName NullableString `json:"lastName,omitempty"`
 	// Initial public metadata (SDK-readable, server-written). Max 512 bytes.
-	PublicMetadata map[string]interface{} `json:"publicMetadata"`
+	PublicMetadata map[string]interface{} `json:"publicMetadata,omitempty"`
 	// Initial private metadata (server-only). Max 4096 bytes.
-	PrivateMetadata map[string]interface{} `json:"privateMetadata"`
+	PrivateMetadata map[string]interface{} `json:"privateMetadata,omitempty"`
 	// Initial unsafe metadata (end-user writable). Max 512 bytes.
-	UnsafeMetadata map[string]interface{} `json:"unsafeMetadata"`
+	UnsafeMetadata map[string]interface{} `json:"unsafeMetadata,omitempty"`
 }
-
-type _CreateUserRequest CreateUserRequest
 
 // NewCreateUserRequest instantiates a new CreateUserRequest object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateUserRequest(publicMetadata map[string]interface{}, privateMetadata map[string]interface{}, unsafeMetadata map[string]interface{}) *CreateUserRequest {
+func NewCreateUserRequest() *CreateUserRequest {
 	this := CreateUserRequest{}
-	this.PublicMetadata = publicMetadata
-	this.PrivateMetadata = privateMetadata
-	this.UnsafeMetadata = unsafeMetadata
 	return &this
 }
 
@@ -91,6 +84,7 @@ func (o *CreateUserRequest) HasEmail() bool {
 func (o *CreateUserRequest) SetEmail(v string) {
 	o.Email.Set(&v)
 }
+
 // SetEmailNil sets the value for Email to be an explicit nil
 func (o *CreateUserRequest) SetEmailNil() {
 	o.Email.Set(nil)
@@ -133,6 +127,7 @@ func (o *CreateUserRequest) HasPassword() bool {
 func (o *CreateUserRequest) SetPassword(v string) {
 	o.Password.Set(&v)
 }
+
 // SetPasswordNil sets the value for Password to be an explicit nil
 func (o *CreateUserRequest) SetPasswordNil() {
 	o.Password.Set(nil)
@@ -175,6 +170,7 @@ func (o *CreateUserRequest) HasFirstName() bool {
 func (o *CreateUserRequest) SetFirstName(v string) {
 	o.FirstName.Set(&v)
 }
+
 // SetFirstNameNil sets the value for FirstName to be an explicit nil
 func (o *CreateUserRequest) SetFirstNameNil() {
 	o.FirstName.Set(nil)
@@ -217,6 +213,7 @@ func (o *CreateUserRequest) HasLastName() bool {
 func (o *CreateUserRequest) SetLastName(v string) {
 	o.LastName.Set(&v)
 }
+
 // SetLastNameNil sets the value for LastName to be an explicit nil
 func (o *CreateUserRequest) SetLastNameNil() {
 	o.LastName.Set(nil)
@@ -227,80 +224,104 @@ func (o *CreateUserRequest) UnsetLastName() {
 	o.LastName.Unset()
 }
 
-// GetPublicMetadata returns the PublicMetadata field value
+// GetPublicMetadata returns the PublicMetadata field value if set, zero value otherwise.
 func (o *CreateUserRequest) GetPublicMetadata() map[string]interface{} {
-	if o == nil {
+	if o == nil || IsNil(o.PublicMetadata) {
 		var ret map[string]interface{}
 		return ret
 	}
-
 	return o.PublicMetadata
 }
 
-// GetPublicMetadataOk returns a tuple with the PublicMetadata field value
+// GetPublicMetadataOk returns a tuple with the PublicMetadata field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateUserRequest) GetPublicMetadataOk() (map[string]interface{}, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.PublicMetadata) {
 		return map[string]interface{}{}, false
 	}
 	return o.PublicMetadata, true
 }
 
-// SetPublicMetadata sets field value
+// HasPublicMetadata returns a boolean if a field has been set.
+func (o *CreateUserRequest) HasPublicMetadata() bool {
+	if o != nil && !IsNil(o.PublicMetadata) {
+		return true
+	}
+
+	return false
+}
+
+// SetPublicMetadata gets a reference to the given map[string]interface{} and assigns it to the PublicMetadata field.
 func (o *CreateUserRequest) SetPublicMetadata(v map[string]interface{}) {
 	o.PublicMetadata = v
 }
 
-// GetPrivateMetadata returns the PrivateMetadata field value
+// GetPrivateMetadata returns the PrivateMetadata field value if set, zero value otherwise.
 func (o *CreateUserRequest) GetPrivateMetadata() map[string]interface{} {
-	if o == nil {
+	if o == nil || IsNil(o.PrivateMetadata) {
 		var ret map[string]interface{}
 		return ret
 	}
-
 	return o.PrivateMetadata
 }
 
-// GetPrivateMetadataOk returns a tuple with the PrivateMetadata field value
+// GetPrivateMetadataOk returns a tuple with the PrivateMetadata field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateUserRequest) GetPrivateMetadataOk() (map[string]interface{}, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.PrivateMetadata) {
 		return map[string]interface{}{}, false
 	}
 	return o.PrivateMetadata, true
 }
 
-// SetPrivateMetadata sets field value
+// HasPrivateMetadata returns a boolean if a field has been set.
+func (o *CreateUserRequest) HasPrivateMetadata() bool {
+	if o != nil && !IsNil(o.PrivateMetadata) {
+		return true
+	}
+
+	return false
+}
+
+// SetPrivateMetadata gets a reference to the given map[string]interface{} and assigns it to the PrivateMetadata field.
 func (o *CreateUserRequest) SetPrivateMetadata(v map[string]interface{}) {
 	o.PrivateMetadata = v
 }
 
-// GetUnsafeMetadata returns the UnsafeMetadata field value
+// GetUnsafeMetadata returns the UnsafeMetadata field value if set, zero value otherwise.
 func (o *CreateUserRequest) GetUnsafeMetadata() map[string]interface{} {
-	if o == nil {
+	if o == nil || IsNil(o.UnsafeMetadata) {
 		var ret map[string]interface{}
 		return ret
 	}
-
 	return o.UnsafeMetadata
 }
 
-// GetUnsafeMetadataOk returns a tuple with the UnsafeMetadata field value
+// GetUnsafeMetadataOk returns a tuple with the UnsafeMetadata field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateUserRequest) GetUnsafeMetadataOk() (map[string]interface{}, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.UnsafeMetadata) {
 		return map[string]interface{}{}, false
 	}
 	return o.UnsafeMetadata, true
 }
 
-// SetUnsafeMetadata sets field value
+// HasUnsafeMetadata returns a boolean if a field has been set.
+func (o *CreateUserRequest) HasUnsafeMetadata() bool {
+	if o != nil && !IsNil(o.UnsafeMetadata) {
+		return true
+	}
+
+	return false
+}
+
+// SetUnsafeMetadata gets a reference to the given map[string]interface{} and assigns it to the UnsafeMetadata field.
 func (o *CreateUserRequest) SetUnsafeMetadata(v map[string]interface{}) {
 	o.UnsafeMetadata = v
 }
 
 func (o CreateUserRequest) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -321,49 +342,16 @@ func (o CreateUserRequest) ToMap() (map[string]interface{}, error) {
 	if o.LastName.IsSet() {
 		toSerialize["lastName"] = o.LastName.Get()
 	}
-	toSerialize["publicMetadata"] = o.PublicMetadata
-	toSerialize["privateMetadata"] = o.PrivateMetadata
-	toSerialize["unsafeMetadata"] = o.UnsafeMetadata
+	if !IsNil(o.PublicMetadata) {
+		toSerialize["publicMetadata"] = o.PublicMetadata
+	}
+	if !IsNil(o.PrivateMetadata) {
+		toSerialize["privateMetadata"] = o.PrivateMetadata
+	}
+	if !IsNil(o.UnsafeMetadata) {
+		toSerialize["unsafeMetadata"] = o.UnsafeMetadata
+	}
 	return toSerialize, nil
-}
-
-func (o *CreateUserRequest) UnmarshalJSON(data []byte) (err error) {
-	// This validates that all required properties are included in the JSON object
-	// by unmarshalling the object into a generic map with string keys and checking
-	// that every required field exists as a key in the generic map.
-	requiredProperties := []string{
-		"publicMetadata",
-		"privateMetadata",
-		"unsafeMetadata",
-	}
-
-	allProperties := make(map[string]interface{})
-
-	err = json.Unmarshal(data, &allProperties)
-
-	if err != nil {
-		return err;
-	}
-
-	for _, requiredProperty := range(requiredProperties) {
-		if _, exists := allProperties[requiredProperty]; !exists {
-			return fmt.Errorf("no value given for required property %v", requiredProperty)
-		}
-	}
-
-	varCreateUserRequest := _CreateUserRequest{}
-
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateUserRequest)
-
-	if err != nil {
-		return err
-	}
-
-	*o = CreateUserRequest(varCreateUserRequest)
-
-	return err
 }
 
 type NullableCreateUserRequest struct {
@@ -401,5 +389,3 @@ func (v *NullableCreateUserRequest) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

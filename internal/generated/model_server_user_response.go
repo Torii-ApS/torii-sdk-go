@@ -11,10 +11,10 @@ API version: v1
 package generated
 
 import (
-	"encoding/json"
-	"time"
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // checks if the ServerUserResponse type satisfies the MappedNullable interface at compile time
@@ -161,6 +161,7 @@ func (o *ServerUserResponse) HasName() bool {
 func (o *ServerUserResponse) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *ServerUserResponse) SetNameNil() {
 	o.Name.Set(nil)
@@ -203,6 +204,7 @@ func (o *ServerUserResponse) HasFirstName() bool {
 func (o *ServerUserResponse) SetFirstName(v string) {
 	o.FirstName.Set(&v)
 }
+
 // SetFirstNameNil sets the value for FirstName to be an explicit nil
 func (o *ServerUserResponse) SetFirstNameNil() {
 	o.FirstName.Set(nil)
@@ -245,6 +247,7 @@ func (o *ServerUserResponse) HasLastName() bool {
 func (o *ServerUserResponse) SetLastName(v string) {
 	o.LastName.Set(&v)
 }
+
 // SetLastNameNil sets the value for LastName to be an explicit nil
 func (o *ServerUserResponse) SetLastNameNil() {
 	o.LastName.Set(nil)
@@ -287,6 +290,7 @@ func (o *ServerUserResponse) HasLocale() bool {
 func (o *ServerUserResponse) SetLocale(v string) {
 	o.Locale.Set(&v)
 }
+
 // SetLocaleNil sets the value for Locale to be an explicit nil
 func (o *ServerUserResponse) SetLocaleNil() {
 	o.Locale.Set(nil)
@@ -401,6 +405,7 @@ func (o *ServerUserResponse) HasEmail() bool {
 func (o *ServerUserResponse) SetEmail(v string) {
 	o.Email.Set(&v)
 }
+
 // SetEmailNil sets the value for Email to be an explicit nil
 func (o *ServerUserResponse) SetEmailNil() {
 	o.Email.Set(nil)
@@ -443,6 +448,7 @@ func (o *ServerUserResponse) HasEmailVerifiedAt() bool {
 func (o *ServerUserResponse) SetEmailVerifiedAt(v time.Time) {
 	o.EmailVerifiedAt.Set(&v)
 }
+
 // SetEmailVerifiedAtNil sets the value for EmailVerifiedAt to be an explicit nil
 func (o *ServerUserResponse) SetEmailVerifiedAtNil() {
 	o.EmailVerifiedAt.Set(nil)
@@ -485,6 +491,7 @@ func (o *ServerUserResponse) HasDeletedAt() bool {
 func (o *ServerUserResponse) SetDeletedAt(v time.Time) {
 	o.DeletedAt.Set(&v)
 }
+
 // SetDeletedAtNil sets the value for DeletedAt to be an explicit nil
 func (o *ServerUserResponse) SetDeletedAtNil() {
 	o.DeletedAt.Set(nil)
@@ -568,7 +575,7 @@ func (o *ServerUserResponse) SetUnsafeMetadata(v map[string]interface{}) {
 }
 
 func (o ServerUserResponse) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -629,10 +636,10 @@ func (o *ServerUserResponse) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -688,5 +695,3 @@ func (v *NullableServerUserResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

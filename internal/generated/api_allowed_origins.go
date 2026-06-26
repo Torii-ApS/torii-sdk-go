@@ -18,12 +18,11 @@ import (
 	"net/url"
 )
 
-
 // AllowedOriginsAPIService AllowedOriginsAPI service
 type AllowedOriginsAPIService service
 
 type ApiListRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *AllowedOriginsAPIService
 }
 
@@ -34,24 +33,25 @@ func (r ApiListRequest) Execute() (*AllowedOriginsResponse, *http.Response, erro
 /*
 List List escape-hatch origins for this environment
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiListRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiListRequest
 */
 func (a *AllowedOriginsAPIService) List(ctx context.Context) ApiListRequest {
 	return ApiListRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return AllowedOriginsResponse
+//
+//	@return AllowedOriginsResponse
 func (a *AllowedOriginsAPIService) ListExecute(r ApiListRequest) (*AllowedOriginsResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *AllowedOriginsResponse
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *AllowedOriginsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AllowedOriginsAPIService.List")
@@ -120,8 +120,8 @@ func (a *AllowedOriginsAPIService) ListExecute(r ApiListRequest) (*AllowedOrigin
 }
 
 type ApiSetRequest struct {
-	ctx context.Context
-	ApiService *AllowedOriginsAPIService
+	ctx                      context.Context
+	ApiService               *AllowedOriginsAPIService
 	setAllowedOriginsRequest *SetAllowedOriginsRequest
 }
 
@@ -139,24 +139,25 @@ Set Replace the escape-hatch origins for this environment
 
 Full origins incl. non-http schemes (e.g. capacitor://localhost). Replaces the list.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiSetRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiSetRequest
 */
 func (a *AllowedOriginsAPIService) Set(ctx context.Context) ApiSetRequest {
 	return ApiSetRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return AllowedOriginsResponse
+//
+//	@return AllowedOriginsResponse
 func (a *AllowedOriginsAPIService) SetExecute(r ApiSetRequest) (*AllowedOriginsResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *AllowedOriginsResponse
+		localVarHTTPMethod  = http.MethodPut
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *AllowedOriginsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AllowedOriginsAPIService.Set")

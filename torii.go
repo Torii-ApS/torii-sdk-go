@@ -130,8 +130,8 @@ type CreateUserInput struct {
 	Password  *string
 	FirstName *string
 	LastName  *string
-	// Metadata bags. Optional: a nil map is sent as an empty object (a new user
-	// has no prior metadata to preserve), so omitting them never clobbers.
+	// Metadata bags. Optional: a nil map is omitted from the request, and the
+	// server defaults an absent bag to {} (a new user has nothing to clobber).
 	PublicMetadata  map[string]any
 	PrivateMetadata map[string]any
 	UnsafeMetadata  map[string]any
@@ -227,13 +227,7 @@ func (c *usersClient) Get(ctx context.Context, userID string) (*User, error) {
 }
 
 func (c *usersClient) Create(ctx context.Context, in CreateUserInput) (*User, error) {
-	// The three metadata bags are required by the generated request; a nil map
-	// becomes an empty object (a brand-new user has nothing to clobber).
-	body := generated.NewCreateUserRequest(
-		orEmptyMap(in.PublicMetadata),
-		orEmptyMap(in.PrivateMetadata),
-		orEmptyMap(in.UnsafeMetadata),
-	)
+	body := generated.NewCreateUserRequest()
 	if in.Email != nil {
 		body.SetEmail(*in.Email)
 	}
@@ -245,6 +239,17 @@ func (c *usersClient) Create(ctx context.Context, in CreateUserInput) (*User, er
 	}
 	if in.LastName != nil {
 		body.SetLastName(*in.LastName)
+	}
+	// Metadata bags are optional; only send what the caller set. The server
+	// defaults absent bags to {} (a brand-new user has nothing to clobber).
+	if in.PublicMetadata != nil {
+		body.SetPublicMetadata(in.PublicMetadata)
+	}
+	if in.PrivateMetadata != nil {
+		body.SetPrivateMetadata(in.PrivateMetadata)
+	}
+	if in.UnsafeMetadata != nil {
+		body.SetUnsafeMetadata(in.UnsafeMetadata)
 	}
 	res, httpRes, err := c.api.ServerUsersAPI.CreateUser(ctx).CreateUserRequest(*body).Execute()
 	if err := wrapAPIError(httpRes, err); err != nil {
@@ -409,15 +414,6 @@ func userFromGenerated(g *generated.ServerUserResponse) User {
 		u.DeletedAt = &t
 	}
 	return u
-}
-
-// orEmptyMap returns an empty map for a nil input so the required metadata bags
-// on CreateUserRequest are always present (a new user has nothing to clobber).
-func orEmptyMap(m map[string]any) map[string]any {
-	if m == nil {
-		return map[string]any{}
-	}
-	return m
 }
 
 func sessionFromGenerated(g *generated.UserSessionResponse) Session {
