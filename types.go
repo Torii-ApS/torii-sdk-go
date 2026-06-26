@@ -111,6 +111,21 @@ func (e *APIError) Error() string {
 // errors that ship a body use this shape.
 type ProblemDetail = generated.ProblemDetail
 
+// UpdateUserRequest is the tri-state PATCH body for Users.Update, re-exported
+// from the generated package so a new spec field flows through with zero hand
+// edits. Build it with NewUpdateUserRequest and the generated setters:
+//   - SetFirstName(v) / SetLocale(v) ... -> set the field
+//   - SetFirstNameNil() / SetLastNameNil() / SetLocaleNil() -> clear (JSON null)
+//   - leave a field unset -> omit it (server leaves it unchanged)
+//
+// Metadata bags are 2-state (omit vs object); a null-valued key inside a bag
+// deletes that key. The pinned wire contract lives in
+// contract-tests/fixtures/patch-wire and is asserted in patch_wire_test.go.
+type UpdateUserRequest = generated.UpdateUserRequest
+
+// NewUpdateUserRequest returns an empty tri-state PATCH body (all fields unset).
+func NewUpdateUserRequest() *UpdateUserRequest { return generated.NewUpdateUserRequest() }
+
 // WebhookEvent is the shape of a verified outbound webhook payload.
 // The fields are tentative until torii's webhook subsystem ships; they're
 // declared here so that adopting VerifyWebhook later doesn't break callers
