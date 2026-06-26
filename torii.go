@@ -1,7 +1,6 @@
 package torii
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -153,7 +152,7 @@ type Users interface {
 	List(ctx context.Context, opts ListUsersOptions) (CursorPage[User], error)
 	Get(ctx context.Context, userID string) (*User, error)
 	Create(ctx context.Context, in CreateUserInput) (*User, error)
-	Update(ctx context.Context, userID string, in UpdateUserInput) (*User, error)
+	Update(ctx context.Context, userID string, in UpdateUserRequest) (*User, error)
 	Delete(ctx context.Context, userID string) error
 	Ban(ctx context.Context, userID string) (*User, error)
 	Unban(ctx context.Context, userID string) (*User, error)
@@ -259,80 +258,18 @@ func (c *usersClient) Create(ctx context.Context, in CreateUserInput) (*User, er
 	return &u, nil
 }
 
-func (c *usersClient) Update(ctx context.Context, userID string, in UpdateUserInput) (*User, error) {
-	// The generated UpdateUserRequest uses `*string` fields (omitempty), which
-	// cannot express "send JSON null to clear this field". We sidestep the
-	// generated body marshalling by serialising the tri-state Patch[T]
-	// wrappers ourselves and PATCHing the bytes directly.
-	body, err := in.asJSONBody()
-	if err != nil {
-		return nil, newError("torii.Users.Update: encode body", err)
-	}
-	var out generated.ServerUserResponse
-	if err := c.doJSON(ctx, http.MethodPatch,
-		"/api/server/v1/users/"+url.PathEscape(userID), body, &out); err != nil {
+func (c *usersClient) Update(ctx context.Context, userID string, in UpdateUserRequest) (*User, error) {
+	// The generated UpdateUserRequest carries tri-state natively: SetX(v) sets,
+	// SetXNil() clears (JSON null), an unset field is omitted (server leaves it
+	// alone). Its MarshalJSON/ToMap honours that, so we route straight through the
+	// generated client like Create. Metadata bags are 2-state (omit vs object);
+	// a null-valued key inside a bag deletes that key.
+	res, httpRes, err := c.api.ServerUsersAPI.UpdateUser(ctx, userID).UpdateUserRequest(in).Execute()
+	if err := wrapAPIError(httpRes, err); err != nil {
 		return nil, err
 	}
-	u := userFromGenerated(&out)
+	u := userFromGenerated(res)
 	return &u, nil
-}
-
-// doJSON sends a JSON request body via the generated APIClient's
-// configured *http.Client and decodes the response into out (when non-nil
-// and the response is 2xx). Non-2xx responses are returned as *APIError.
-func (c *usersClient) doJSON(ctx context.Context, method, path string, body []byte, out any) error {
-	cfg := c.api.GetConfig()
-	if len(cfg.Servers) == 0 {
-		return newError("torii: no server URL configured", nil)
-	}
-	base := cfg.Servers[0].URL
-	req, err := http.NewRequestWithContext(ctx, method, base+path, bytes.NewReader(body))
-	if err != nil {
-		return err
-	}
-	for k, v := range cfg.DefaultHeader {
-		req.Header.Set(k, v)
-	}
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Accept", "application/json")
-	if cfg.UserAgent != "" {
-		req.Header.Set("User-Agent", cfg.UserAgent)
-	}
-	resp, err := cfg.HTTPClient.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-	respBody, rerr := io.ReadAll(resp.Body)
-	if rerr != nil {
-		return rerr
-	}
-	if resp.StatusCode >= 300 {
-		apiErr := &APIError{Status: resp.StatusCode, Message: resp.Status, Body: respBody}
-		var parsed struct {
-			Code      string `json:"code"`
-			SupportID string `json:"supportId"`
-			Message   string `json:"message"`
-		}
-		if jerr := json.Unmarshal(respBody, &parsed); jerr == nil {
-			if parsed.Code != "" {
-				apiErr.Code = parsed.Code
-			}
-			if parsed.SupportID != "" {
-				apiErr.SupportID = parsed.SupportID
-			}
-			if parsed.Message != "" {
-				apiErr.Message = parsed.Message
-			}
-		}
-		return apiErr
-	}
-	if out != nil && len(respBody) > 0 {
-		if err := json.Unmarshal(respBody, out); err != nil {
-			return newError("torii: decode response", err)
-		}
-	}
-	return nil
 }
 
 func (c *usersClient) Delete(ctx context.Context, userID string) error {

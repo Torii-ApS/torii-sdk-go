@@ -70,9 +70,11 @@ func TestClient_SendsBearerAuth(t *testing.T) {
 		t.Errorf("create body email = %v, want ada@example.com", createBody["email"])
 	}
 
-	// Update — hand-rolled doJSON path.
+	// Update — generated tri-state request through the generated client.
 	gotAuth = ""
-	if _, err := client.Users().Update(ctx, "00000000-0000-0000-0000-000000000001", UpdateUserInput{FirstName: SetPatch("Ada")}); err != nil {
+	upd := NewUpdateUserRequest()
+	upd.SetFirstName("Ada")
+	if _, err := client.Users().Update(ctx, "00000000-0000-0000-0000-000000000001", *upd); err != nil {
 		t.Fatalf("Update: %v", err)
 	}
 	if gotAuth != "Bearer sk_test_abc" {
