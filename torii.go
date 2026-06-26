@@ -95,18 +95,21 @@ const (
 // Nullable fields use pointer types so callers can distinguish "not present"
 // (nil) from "present and empty" (*string == "").
 type User struct {
-	ID            string
-	EnvironmentID string
-	Name          *string
-	Email         *string
-	Phone         *string
-	Locale        *Locale
-	Address       *string
-	DateOfBirth   *string // ISO-8601 date (YYYY-MM-DD)
-	Status        UserStatus
-	CreatedAt     time.Time
-	UpdatedAt     time.Time
-	DeletedAt     *time.Time
+	ID              string
+	EnvironmentID   string
+	Name            *string
+	FirstName       *string
+	LastName        *string
+	Email           *string
+	Locale          *Locale
+	Status          UserStatus
+	CreatedAt       time.Time
+	UpdatedAt       time.Time
+	EmailVerifiedAt *time.Time
+	DeletedAt       *time.Time
+	PublicMetadata  map[string]any
+	PrivateMetadata map[string]any
+	UnsafeMetadata  map[string]any
 }
 
 // Session represents an active end-user session for a given user.
@@ -123,18 +126,15 @@ type Session struct {
 
 // CreateUserInput is the request body for Users.Create.
 type CreateUserInput struct {
-	Email       *string
-	Name        *string
-	Phone       *string
-	Password    *string
-	Address     *string
-	DateOfBirth *string // ISO-8601 date (YYYY-MM-DD)
-	// EmailVerified, Locale, CustomClaims are accepted by the surface contract
-	// but not yet wired in the OpenAPI spec we generate from. They're declared
-	// here so a future spec update can populate them without breaking callers.
-	EmailVerified *bool
-	Locale        *Locale
-	CustomClaims  map[string]any
+	Email     *string
+	Password  *string
+	FirstName *string
+	LastName  *string
+	// Metadata bags. Optional: a nil map is omitted from the request, and the
+	// server defaults an absent bag to {} (a new user has nothing to clobber).
+	PublicMetadata  map[string]any
+	PrivateMetadata map[string]any
+	UnsafeMetadata  map[string]any
 }
 
 // ListUsersOptions controls the search payload for Users.List.
@@ -234,17 +234,22 @@ func (c *usersClient) Create(ctx context.Context, in CreateUserInput) (*User, er
 	if in.Password != nil {
 		body.SetPassword(*in.Password)
 	}
-	if in.Name != nil {
-		body.SetName(*in.Name)
+	if in.FirstName != nil {
+		body.SetFirstName(*in.FirstName)
 	}
-	if in.Phone != nil {
-		body.SetPhone(*in.Phone)
+	if in.LastName != nil {
+		body.SetLastName(*in.LastName)
 	}
-	if in.Address != nil {
-		body.SetAddress(*in.Address)
+	// Metadata bags are optional; only send what the caller set. The server
+	// defaults absent bags to {} (a brand-new user has nothing to clobber).
+	if in.PublicMetadata != nil {
+		body.SetPublicMetadata(in.PublicMetadata)
 	}
-	if in.DateOfBirth != nil {
-		body.SetDateOfBirth(*in.DateOfBirth)
+	if in.PrivateMetadata != nil {
+		body.SetPrivateMetadata(in.PrivateMetadata)
+	}
+	if in.UnsafeMetadata != nil {
+		body.SetUnsafeMetadata(in.UnsafeMetadata)
 	}
 	res, httpRes, err := c.api.ServerUsersAPI.CreateUser(ctx).CreateUserRequest(*body).Execute()
 	if err := wrapAPIError(httpRes, err); err != nil {
@@ -263,7 +268,7 @@ func (c *usersClient) Update(ctx context.Context, userID string, in UpdateUserIn
 	if err != nil {
 		return nil, newError("torii.Users.Update: encode body", err)
 	}
-	var out generated.UserResponse
+	var out generated.ServerUserResponse
 	if err := c.doJSON(ctx, http.MethodPatch,
 		"/api/server/v1/users/"+url.PathEscape(userID), body, &out); err != nil {
 		return nil, err
@@ -381,25 +386,28 @@ func (c *sessionsClient) Revoke(ctx context.Context, userID, sessionID string) e
 
 // --- mapping helpers ---------------------------------------------------------
 
-func userFromGenerated(g *generated.UserResponse) User {
+func userFromGenerated(g *generated.ServerUserResponse) User {
 	u := User{
-		ID:            g.Id,
-		EnvironmentID: g.EnvironmentId,
-		Status:        UserStatus(g.Status),
-		CreatedAt:     g.CreatedAt,
-		UpdatedAt:     g.UpdatedAt,
-		Name:          nullableStringToPtr(g.Name),
-		Email:         nullableStringToPtr(g.Email),
-		Phone:         nullableStringToPtr(g.Phone),
-		Address:       nullableStringToPtr(g.Address),
+		ID:              g.Id,
+		EnvironmentID:   g.EnvironmentId,
+		Status:          UserStatus(g.Status),
+		CreatedAt:       g.CreatedAt,
+		UpdatedAt:       g.UpdatedAt,
+		Name:            nullableStringToPtr(g.Name),
+		FirstName:       nullableStringToPtr(g.FirstName),
+		LastName:        nullableStringToPtr(g.LastName),
+		Email:           nullableStringToPtr(g.Email),
+		PublicMetadata:  g.PublicMetadata,
+		PrivateMetadata: g.PrivateMetadata,
+		UnsafeMetadata:  g.UnsafeMetadata,
 	}
 	if g.Locale.IsSet() && g.Locale.Get() != nil {
 		l := Locale(*g.Locale.Get())
 		u.Locale = &l
 	}
-	if g.DateOfBirth.IsSet() && g.DateOfBirth.Get() != nil {
-		s := *g.DateOfBirth.Get()
-		u.DateOfBirth = &s
+	if g.EmailVerifiedAt.IsSet() && g.EmailVerifiedAt.Get() != nil {
+		t := *g.EmailVerifiedAt.Get()
+		u.EmailVerifiedAt = &t
 	}
 	if g.DeletedAt.IsSet() && g.DeletedAt.Get() != nil {
 		t := *g.DeletedAt.Get()

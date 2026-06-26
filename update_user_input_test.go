@@ -2,6 +2,7 @@ package torii
 
 import (
 	"encoding/json"
+	"reflect"
 	"testing"
 )
 
@@ -21,39 +22,37 @@ func TestUpdateUserInput_asJSONBody(t *testing.T) {
 		{
 			name: "set string field",
 			input: UpdateUserInput{
-				Name: SetPatch("Alice"),
+				FirstName: SetPatch("Alice"),
 			},
-			want: map[string]any{"name": "Alice"},
+			want: map[string]any{"firstName": "Alice"},
 		},
 		{
 			name: "clear string field sends null",
 			input: UpdateUserInput{
-				Name: ClearPatch[string](),
+				FirstName: ClearPatch[string](),
 			},
-			want: map[string]any{"name": nil},
+			want: map[string]any{"firstName": nil},
 		},
 		{
 			name: "empty string is preserved (set, not omitted)",
 			input: UpdateUserInput{
-				Name: SetPatch(""),
+				FirstName: SetPatch(""),
 			},
-			want: map[string]any{"name": ""},
+			want: map[string]any{"firstName": ""},
 		},
 		{
 			name: "mixed set/clear/omit across fields",
 			input: UpdateUserInput{
-				Name:        SetPatch("Bob"),
-				Phone:       ClearPatch[string](),
-				Locale:      SetPatch("en"),
-				Address:     ClearPatch[string](),
-				DateOfBirth: SetPatch("1990-01-01"),
+				FirstName:      SetPatch("Bob"),
+				LastName:       ClearPatch[string](),
+				Locale:         SetPatch("en"),
+				UnsafeMetadata: SetPatch(map[string]any{"tier": "pro"}),
 			},
 			want: map[string]any{
-				"name":        "Bob",
-				"phone":       nil,
-				"locale":      "en",
-				"address":     nil,
-				"dateOfBirth": "1990-01-01",
+				"firstName":      "Bob",
+				"lastName":       nil,
+				"locale":         "en",
+				"unsafeMetadata": map[string]any{"tier": "pro"},
 			},
 		},
 		{
@@ -64,11 +63,11 @@ func TestUpdateUserInput_asJSONBody(t *testing.T) {
 			want: map[string]any{"locale": "da"},
 		},
 		{
-			name: "only date of birth cleared",
+			name: "only unsafe metadata cleared",
 			input: UpdateUserInput{
-				DateOfBirth: ClearPatch[string](),
+				UnsafeMetadata: ClearPatch[map[string]any](),
 			},
-			want: map[string]any{"dateOfBirth": nil},
+			want: map[string]any{"unsafeMetadata": nil},
 		},
 	}
 
@@ -94,7 +93,7 @@ func TestUpdateUserInput_asJSONBody(t *testing.T) {
 					t.Errorf("missing key %q in output %v", k, got)
 					continue
 				}
-				if gv != v {
+				if !reflect.DeepEqual(gv, v) {
 					t.Errorf("key %q: got %v (%T), want %v (%T)", k, gv, gv, v, v)
 				}
 			}
