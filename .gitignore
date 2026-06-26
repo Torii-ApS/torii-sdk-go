@@ -1,0 +1,19 @@
+# Build artifacts
+*.test
+*.out
+*.exe
+coverage.txt
+coverage.html
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local environment
+.env
+.envrc
