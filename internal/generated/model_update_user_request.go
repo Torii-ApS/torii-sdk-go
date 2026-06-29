@@ -25,7 +25,7 @@ type UpdateUserRequest struct {
 	LastName NullableString `json:"lastName,omitempty"`
 	// New preferred locale. Send null to clear; omit to leave unchanged.
 	Locale NullableString `json:"locale,omitempty"`
-	// Deep-merges into the user's unsafe metadata (a key set to null removes it); omit to leave unchanged. Merged result max 512 bytes.
+	// Deep-merges into the user's unsafe metadata (a key set to null removes it); omit to leave unchanged. Counts toward the 8 KB combined metadata budget.
 	UnsafeMetadata map[string]interface{} `json:"unsafeMetadata,omitempty"`
 }
 
