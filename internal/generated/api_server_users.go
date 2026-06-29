@@ -593,7 +593,7 @@ func (r ApiSearchUsersRequest) Execute() (*CursorPageResponseServerUserResponse,
 /*
 SearchUsers Search users
 
-Returns a cursor-paginated page of end-users in the environment matching the optional filters. Filters use the same tri-state PATCH semantics as `UpdateUserRequest`: omit a field to skip that filter, send a value to require it, send null to require null. Uses POST so the filter body can be sent without URL-encoding.
+Returns a cursor-paginated page of end-users in the environment matching the optional filters. Uses POST so the filter body can be sent without URL-encoding. Three id-selectors resolve users to a set of ids (`userIds`, the explicit batch-by-id lookup; `emailAddresses`, exact and case-insensitive; `email`, a case-insensitive substring); when more than one is supplied they are combined with AND (intersection). The remaining filters (`name`, `statuses`, `createdAfter`/`createdBefore`) apply on top.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiSearchUsersRequest
@@ -677,6 +677,17 @@ func (a *ServerUsersAPIService) SearchUsersExecute(r ApiSearchUsersRequest) (*Cu
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ProblemDetail
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ProblemDetail
@@ -1016,7 +1027,7 @@ func (r ApiUpdateUserMetadataRequest) Execute() (*ServerUserResponse, *http.Resp
 /*
 UpdateUserMetadata Update user metadata
 
-Deep-merges into any of the three metadata bags. Each bag is tri-state: omit the key to leave the bag unchanged, or send an object to deep-merge into the existing bag (a key set to null removes it). The merged result is capped at 512 bytes for `publicMetadata`/`unsafeMetadata` and 4096 bytes for `privateMetadata`.
+Deep-merges into any of the three metadata bags. Each bag is tri-state: omit the key to leave the bag unchanged, or send an object to deep-merge into the existing bag (a key set to null removes it). The merged metadata is capped at 8 KB total across `publicMetadata`, `privateMetadata`, and `unsafeMetadata` combined (no per-bag limit).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param userId Identifier of the user to update.

@@ -27,11 +27,11 @@ type CreateUserRequest struct {
 	FirstName NullableString `json:"firstName,omitempty"`
 	// Last (family) name to seed on the profile.
 	LastName NullableString `json:"lastName,omitempty"`
-	// Initial public metadata (SDK-readable, server-written). Max 512 bytes.
+	// Initial public metadata (SDK-readable, server-written). Part of the 8 KB combined metadata budget.
 	PublicMetadata map[string]interface{} `json:"publicMetadata,omitempty"`
-	// Initial private metadata (server-only). Max 4096 bytes.
+	// Initial private metadata (server-only). Part of the 8 KB combined metadata budget.
 	PrivateMetadata map[string]interface{} `json:"privateMetadata,omitempty"`
-	// Initial unsafe metadata (end-user writable). Max 512 bytes.
+	// Initial unsafe metadata (end-user writable). Part of the 8 KB combined metadata budget.
 	UnsafeMetadata map[string]interface{} `json:"unsafeMetadata,omitempty"`
 }
 

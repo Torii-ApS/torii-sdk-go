@@ -18,11 +18,15 @@ import (
 // checks if the ServerUserSearchRequest type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &ServerUserSearchRequest{}
 
-// ServerUserSearchRequest Optional filter body for `POST /users/search`. Every field is tri-state: omit to skip that filter, send a value to require it. Fields whose inner type is nullable (currently `name`, `email`) additionally accept JSON null to filter for users where that column is null; the non-nullable `statuses` field rejects null.
+// ServerUserSearchRequest Optional filter body for `POST /users/search`. Every field is tri-state: omit to skip that filter, send a value to apply it. The three id-selectors (`userIds`, `emailAddresses`, `email`) resolve users to a set of ids and, when more than one is supplied, are combined with AND (intersection); a supplied id-selector whose resolved set is empty returns an empty page. `name` additionally accepts JSON null to match users with no name; an explicit null or blank `email` contributes no restriction; the non-nullable `statuses` field rejects null.
 type ServerUserSearchRequest struct {
 	// Filter by name (case-insensitive substring match). Send null to require users with no name.
 	Name NullableString `json:"name,omitempty"`
-	// Filter by primary email (case-insensitive substring match). Send null to require users with no email.
+	// Restrict to these user ids (the explicit batch-by-id lookup), at most 100. AND-combined with the other id-selectors; an empty list returns an empty page.
+	UserIds []string `json:"userIds,omitempty"`
+	// Resolve users by exact (case-insensitive) email address (one or more, at most 100). Unlike `email`, never matches a superstring. AND-combined with the other id-selectors; an empty list, or addresses matching nobody, returns an empty page.
+	EmailAddresses []string `json:"emailAddresses,omitempty"`
+	// Filter by primary email (case-insensitive substring match). AND-combined with the other id-selectors. An explicit null or blank value contributes no restriction.
 	Email NullableString `json:"email,omitempty"`
 	// Filter by user status. Returns users matching any of the supplied statuses.
 	Statuses []string `json:"statuses,omitempty"`
@@ -90,6 +94,70 @@ func (o *ServerUserSearchRequest) SetNameNil() {
 // UnsetName ensures that no value is present for Name, not even an explicit nil
 func (o *ServerUserSearchRequest) UnsetName() {
 	o.Name.Unset()
+}
+
+// GetUserIds returns the UserIds field value if set, zero value otherwise.
+func (o *ServerUserSearchRequest) GetUserIds() []string {
+	if o == nil || IsNil(o.UserIds) {
+		var ret []string
+		return ret
+	}
+	return o.UserIds
+}
+
+// GetUserIdsOk returns a tuple with the UserIds field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ServerUserSearchRequest) GetUserIdsOk() ([]string, bool) {
+	if o == nil || IsNil(o.UserIds) {
+		return nil, false
+	}
+	return o.UserIds, true
+}
+
+// HasUserIds returns a boolean if a field has been set.
+func (o *ServerUserSearchRequest) HasUserIds() bool {
+	if o != nil && !IsNil(o.UserIds) {
+		return true
+	}
+
+	return false
+}
+
+// SetUserIds gets a reference to the given []string and assigns it to the UserIds field.
+func (o *ServerUserSearchRequest) SetUserIds(v []string) {
+	o.UserIds = v
+}
+
+// GetEmailAddresses returns the EmailAddresses field value if set, zero value otherwise.
+func (o *ServerUserSearchRequest) GetEmailAddresses() []string {
+	if o == nil || IsNil(o.EmailAddresses) {
+		var ret []string
+		return ret
+	}
+	return o.EmailAddresses
+}
+
+// GetEmailAddressesOk returns a tuple with the EmailAddresses field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ServerUserSearchRequest) GetEmailAddressesOk() ([]string, bool) {
+	if o == nil || IsNil(o.EmailAddresses) {
+		return nil, false
+	}
+	return o.EmailAddresses, true
+}
+
+// HasEmailAddresses returns a boolean if a field has been set.
+func (o *ServerUserSearchRequest) HasEmailAddresses() bool {
+	if o != nil && !IsNil(o.EmailAddresses) {
+		return true
+	}
+
+	return false
+}
+
+// SetEmailAddresses gets a reference to the given []string and assigns it to the EmailAddresses field.
+func (o *ServerUserSearchRequest) SetEmailAddresses(v []string) {
+	o.EmailAddresses = v
 }
 
 // GetEmail returns the Email field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -265,6 +333,12 @@ func (o ServerUserSearchRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	if o.Name.IsSet() {
 		toSerialize["name"] = o.Name.Get()
+	}
+	if !IsNil(o.UserIds) {
+		toSerialize["userIds"] = o.UserIds
+	}
+	if !IsNil(o.EmailAddresses) {
+		toSerialize["emailAddresses"] = o.EmailAddresses
 	}
 	if o.Email.IsSet() {
 		toSerialize["email"] = o.Email.Get()

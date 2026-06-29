@@ -50,6 +50,10 @@ type APIClient struct {
 
 	AllowedOriginsAPI *AllowedOriginsAPIService
 
+	InvitationsAPI *InvitationsAPIService
+
+	ServerImpersonationAPI *ServerImpersonationAPIService
+
 	ServerSessionsAPI *ServerSessionsAPIService
 
 	ServerUsersAPI *ServerUsersAPIService
@@ -72,6 +76,8 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 
 	// API Services
 	c.AllowedOriginsAPI = (*AllowedOriginsAPIService)(&c.common)
+	c.InvitationsAPI = (*InvitationsAPIService)(&c.common)
+	c.ServerImpersonationAPI = (*ServerImpersonationAPIService)(&c.common)
 	c.ServerSessionsAPI = (*ServerSessionsAPIService)(&c.common)
 	c.ServerUsersAPI = (*ServerUsersAPIService)(&c.common)
 
