@@ -41,7 +41,7 @@ func (r ApiMintImpersonationTokenRequest) Execute() (*ServerImpersonationTokenRe
 /*
 MintImpersonationToken Mint an impersonation token
 
-Creates a single-use, short-lived impersonation token for the target user, attributed to `actorUserId`. Redeem it via `POST /_torii/auth/session/impersonate` to obtain a session and access token as the target user. Counts against the same per-period impersonation quota and usage ledger as the dashboard.
+Creates a single-use, short-lived impersonation token for the target user, attributed to `actorUserId`. Redeem it programmatically via `POST /_torii/auth/session/impersonate` (access token in the body), or hand the returned `url` to an operator to open in a browser (establishes the session and redirects to the landing URL). Counts against the same per-period impersonation quota and usage ledger as the dashboard.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param userId The user to impersonate.

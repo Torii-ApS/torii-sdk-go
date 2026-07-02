@@ -21,10 +21,12 @@ var _ MappedNullable = &ServerImpersonationTokenResponse{}
 
 // ServerImpersonationTokenResponse A minted impersonation token.
 type ServerImpersonationTokenResponse struct {
-	// The single-use token. Redeem via POST /_torii/auth/session/impersonate.
+	// The single-use token. Redeem via POST /_torii/auth/session/impersonate, or hand the ready-to-use `url` to an operator.
 	Token string `json:"token"`
 	// The token's lifetime in seconds (the resolved value after any override).
 	ExpiresInSeconds int64 `json:"expiresInSeconds"`
+	// A ready-to-use, navigable redeem link on the environment's Frontend API host. Opening it in a browser establishes the impersonated session and redirects to the landing URL. Backed by the same single-use token. Null when no landing URL could be resolved (no `redirectUrl` given and the environment has no concrete allowed origin) — redeem the `token` via POST instead.
+	Url NullableString `json:"url,omitempty"`
 }
 
 type _ServerImpersonationTokenResponse ServerImpersonationTokenResponse
@@ -96,6 +98,49 @@ func (o *ServerImpersonationTokenResponse) SetExpiresInSeconds(v int64) {
 	o.ExpiresInSeconds = v
 }
 
+// GetUrl returns the Url field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ServerImpersonationTokenResponse) GetUrl() string {
+	if o == nil || IsNil(o.Url.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.Url.Get()
+}
+
+// GetUrlOk returns a tuple with the Url field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ServerImpersonationTokenResponse) GetUrlOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Url.Get(), o.Url.IsSet()
+}
+
+// HasUrl returns a boolean if a field has been set.
+func (o *ServerImpersonationTokenResponse) HasUrl() bool {
+	if o != nil && o.Url.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetUrl gets a reference to the given NullableString and assigns it to the Url field.
+func (o *ServerImpersonationTokenResponse) SetUrl(v string) {
+	o.Url.Set(&v)
+}
+
+// SetUrlNil sets the value for Url to be an explicit nil
+func (o *ServerImpersonationTokenResponse) SetUrlNil() {
+	o.Url.Set(nil)
+}
+
+// UnsetUrl ensures that no value is present for Url, not even an explicit nil
+func (o *ServerImpersonationTokenResponse) UnsetUrl() {
+	o.Url.Unset()
+}
+
 func (o ServerImpersonationTokenResponse) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -108,6 +153,9 @@ func (o ServerImpersonationTokenResponse) ToMap() (map[string]interface{}, error
 	toSerialize := map[string]interface{}{}
 	toSerialize["token"] = o.Token
 	toSerialize["expiresInSeconds"] = o.ExpiresInSeconds
+	if o.Url.IsSet() {
+		toSerialize["url"] = o.Url.Get()
+	}
 	return toSerialize, nil
 }
 
