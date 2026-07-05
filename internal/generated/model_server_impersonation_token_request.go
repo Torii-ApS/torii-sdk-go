@@ -25,7 +25,9 @@ type ServerImpersonationTokenRequest struct {
 	ActorUserId string `json:"actorUserId"`
 	// Mandatory justification (GDPR purpose limitation); recorded in the audit log on mint and redeem.
 	Reason string `json:"reason"`
-	// Optional token lifetime in seconds, 60..600. Omit for the 60s default.
+	// Optional post-redeem landing URL for the `url` redeem link; its origin must be in the environment's allowed origins. Omit to default to the environment's first non-wildcard allowed origin.
+	RedirectUrl NullableString `json:"redirectUrl,omitempty"`
+	// Optional token lifetime in seconds, 60..600. Omit for the 600s default.
 	ExpiresInSeconds NullableInt64 `json:"expiresInSeconds,omitempty"`
 }
 
@@ -98,6 +100,49 @@ func (o *ServerImpersonationTokenRequest) SetReason(v string) {
 	o.Reason = v
 }
 
+// GetRedirectUrl returns the RedirectUrl field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ServerImpersonationTokenRequest) GetRedirectUrl() string {
+	if o == nil || IsNil(o.RedirectUrl.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.RedirectUrl.Get()
+}
+
+// GetRedirectUrlOk returns a tuple with the RedirectUrl field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ServerImpersonationTokenRequest) GetRedirectUrlOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.RedirectUrl.Get(), o.RedirectUrl.IsSet()
+}
+
+// HasRedirectUrl returns a boolean if a field has been set.
+func (o *ServerImpersonationTokenRequest) HasRedirectUrl() bool {
+	if o != nil && o.RedirectUrl.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetRedirectUrl gets a reference to the given NullableString and assigns it to the RedirectUrl field.
+func (o *ServerImpersonationTokenRequest) SetRedirectUrl(v string) {
+	o.RedirectUrl.Set(&v)
+}
+
+// SetRedirectUrlNil sets the value for RedirectUrl to be an explicit nil
+func (o *ServerImpersonationTokenRequest) SetRedirectUrlNil() {
+	o.RedirectUrl.Set(nil)
+}
+
+// UnsetRedirectUrl ensures that no value is present for RedirectUrl, not even an explicit nil
+func (o *ServerImpersonationTokenRequest) UnsetRedirectUrl() {
+	o.RedirectUrl.Unset()
+}
+
 // GetExpiresInSeconds returns the ExpiresInSeconds field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ServerImpersonationTokenRequest) GetExpiresInSeconds() int64 {
 	if o == nil || IsNil(o.ExpiresInSeconds.Get()) {
@@ -153,6 +198,9 @@ func (o ServerImpersonationTokenRequest) ToMap() (map[string]interface{}, error)
 	toSerialize := map[string]interface{}{}
 	toSerialize["actorUserId"] = o.ActorUserId
 	toSerialize["reason"] = o.Reason
+	if o.RedirectUrl.IsSet() {
+		toSerialize["redirectUrl"] = o.RedirectUrl.Get()
+	}
 	if o.ExpiresInSeconds.IsSet() {
 		toSerialize["expiresInSeconds"] = o.ExpiresInSeconds.Get()
 	}
