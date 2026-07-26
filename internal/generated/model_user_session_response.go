@@ -38,7 +38,7 @@ type UserSessionResponse struct {
 	ExpiresAt time.Time `json:"expiresAt"`
 	// When this session was last seen by the API (ISO-8601 UTC).
 	LastUsedAt time.Time `json:"lastUsedAt"`
-	// Active organization pinned to this session (`org_id` claim on re-mint).
+	// Active organization pinned to this session (the `o` claim on re-mint).
 	ActiveOrganizationId NullableString `json:"activeOrganizationId,omitempty"`
 	// Platform user behind this session when it was established via impersonation; null for normal sign-ins.
 	ImpersonatedBy NullableString `json:"impersonatedBy,omitempty"`
