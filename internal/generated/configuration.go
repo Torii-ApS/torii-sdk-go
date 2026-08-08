@@ -93,7 +93,7 @@ func NewConfiguration() *Configuration {
 		Debug:         false,
 		Servers: ServerConfigurations{
 			{
-				URL:         "https://api.torii.so",
+				URL:         "https://api.toriiauth.eu",
 				Description: "Production backend API",
 			},
 		},
