@@ -25,7 +25,7 @@ type ServerImpersonationTokenResponse struct {
 	Token string `json:"token"`
 	// The token's lifetime in seconds (the resolved value after any override).
 	ExpiresInSeconds int64 `json:"expiresInSeconds"`
-	// A ready-to-use, navigable redeem link on the environment's Frontend API host. Opening it in a browser establishes the impersonated session and redirects to the landing URL. Backed by the same single-use token. Null when no landing URL could be resolved: no `redirectUrl` given and the environment has no concrete allowed origin other than the hosted portal's own — redeem the `token` via POST instead.
+	// A ready-to-use, navigable redeem link on the environment's Frontend API host. Opening it in a browser establishes the impersonated session and redirects to the landing URL. Backed by the same single-use token. Null when no landing URL could be resolved: no `redirectUrl` given and the environment has no impersonation landing URL configured — redeem the `token` via POST instead.
 	Url NullableString `json:"url,omitempty"`
 }
 
